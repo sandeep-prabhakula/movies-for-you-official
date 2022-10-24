@@ -1,25 +1,28 @@
-import './App.css';
-import NavBar from './components/NavBar';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import AuthState from './context/auth/AuthState';
-import Blogs from './components/Blogs';
-import Home from './components/Home';
-import AddPost from './components/AddPost' 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
+
 
 function App() {
   return (
-    <div className="App">
-      <AuthState>
+    <>
+      <UserAuthContextProvider>
         <Router>
-          <NavBar />
           <Routes>
-            <Route exact path='/' element={<Home />} />
-            <Route exact path='/blogs' element={<Blogs />} />
-            <Route exact path='/addpost' element={<AddPost />}/>
+            <Route exact path="/home" element={<ProtectedRoute><Home postType="review"/></ProtectedRoute>}/>
+            <Route exact path="/reviews" element={<ProtectedRoute><Home postType="review"/></ProtectedRoute>}/>
+            <Route exact path="/suggestions" element={<ProtectedRoute><Home postType="suggestions"/></ProtectedRoute>}/>
+            <Route exact path="/pre-release-business" element={<ProtectedRoute><Home postType="pre_release_business"/></ProtectedRoute>}/>
+            <Route exact path="/" element={<Login />} />
+            <Route exact path="/signup" element={<Signup />} />
           </Routes>
         </Router>
-      </AuthState>
-    </div>
+      </UserAuthContextProvider>
+    </>
   );
 }
 
