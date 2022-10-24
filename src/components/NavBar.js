@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from "react-router";
+import { Button } from 'react-bootstrap';
 
 function Navbar() {
     let location = useLocation();
@@ -37,7 +38,7 @@ function Navbar() {
                                 <Link className={`nav-link ${location.pathname === "/pre-release-business" ? 'active' : ''}`} to="/pre-release-business">Pre Release Business</Link>
                             </li>
                         </ul>
-                        <a href="#" className='btn btn-primary' onClick={handleLogout}>Sign out</a>
+                        <Button className='btn btn-primary' onClick={handleLogout}>Sign out</Button>
                     </div>
                 </div>
             </nav>
