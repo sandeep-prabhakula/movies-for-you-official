@@ -62,7 +62,9 @@ const Login = () => {
             </Button>
           </div>
         </Form>
-        <hr />
+        <div className="d-grid gap-2 mt-2 mb-2">
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </div>
         <div>
           <GoogleButton
             className="g-btn"

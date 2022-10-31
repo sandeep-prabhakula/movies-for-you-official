@@ -5,6 +5,7 @@ import { onSnapshot, collection, query,where } from 'firebase/firestore'
 import { firestore } from '../firebase'
 import ReviewItem from "./ReviewItem";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const Home = (props) => {
   const [reviews, setReviews] = useState([])
@@ -30,7 +31,7 @@ const Home = (props) => {
     <>
     <Navbar></Navbar>
     <h1 className='text-center' style={{
-                marginTop: '50px'
+                marginTop: '75px'
             }}>Movies For You - {props.postType}</h1>
       <div className='container'>
         <div className="row">
@@ -45,6 +46,7 @@ const Home = (props) => {
           })}
         </div>
       </div>
+      <Footer></Footer>
     </>
   );
 };
