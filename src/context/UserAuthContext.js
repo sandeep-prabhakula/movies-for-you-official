@@ -28,8 +28,8 @@ export function UserAuthContextProvider({ children }) {
     const googleAuthProvider = new GoogleAuthProvider();
     return signInWithPopup(auth, googleAuthProvider);
   }
-  function forgotPasswordEmail(email){
-    return sendPasswordResetEmail(auth,email)
+  function forgotPasswordEmail(email) {
+    return sendPasswordResetEmail(auth, email)
   }
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export function UserAuthContextProvider({ children }) {
 
   return (
     <userAuthContext.Provider
-      value={{ user, logIn, signUp, logOut, googleSignIn,forgotPasswordEmail }}
+      value={{ user, logIn, signUp, logOut, googleSignIn, forgotPasswordEmail}}
     >
       {children}
     </userAuthContext.Provider>

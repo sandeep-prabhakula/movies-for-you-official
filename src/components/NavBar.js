@@ -1,35 +1,98 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useUserAuth } from "../context/UserAuthContext";
-import { useNavigate } from "react-router";
-import { Button } from 'react-bootstrap';
-
+import { useCallback } from 'react';
+import ReviewItem from './ReviewItem'
+import searchicon from '../icon-assets/searchicon.png'
 function Navbar() {
+    const { user } = useUserAuth()
     let location = useLocation();
+    const [searchedPosts, setSearchedPosts] = useState([]);
     React.useEffect(() => {
     }, [location]);
     const { logOut } = useUserAuth();
-    const navigate = useNavigate();
-    const handleLogout = async () => {
-        try {
-            await logOut();
-            navigate("/");
-        } catch (error) {
-            console.log(error.message);
+    const modalRef = useRef(null)
+
+
+    const debounce = (func) => {
+        let timer
+        return function (...args) {
+            const context = this
+            if (timer) clearTimeout(timer)
+            timer = setTimeout(() => {
+                timer = null
+                func.apply(context, args)
+            }, 500)
         }
-    };
+    }
+
+
+
+    const onTextChangeListener = (e) => {
+        const { value } = e.target
+        const jsonArrayOfItems = JSON.parse(window.localStorage.getItem('allPosts'))
+        setSearchedPosts(jsonArrayOfItems.filter((item) => {
+            return item.title.includes(value) || item.description.includes(value) || item.writtenBy.includes(value)
+        }))
+
+    }
+
+
+    const optimizedSearch = useCallback(debounce(onTextChangeListener), [])
+
     return (
         <>
-            <nav className="navbar fixed-top navbar-expand-lg bg-dark navbar-dark">
+            {/* Modal  */}
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Search</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={optimizedSearch} />
+
+
+                            {searchedPosts.map((element) => {
+                                return <div key={element.postedTime} className="col-md-3">
+                                    <ReviewItem title={element.title ? element.title : ""}
+                                        description={element.description ? element.description : ""}
+                                        imageURL={element.imageURL ? element.imageURL : "https://i.ytimg.com/vi/z2T9NDVpzXk/hqdefault.jpg"}
+                                        videoURL={element.videoURL ? element.videoURL : ''}
+                                        typeOfPost={element.postType}
+                                        id={element.postedTime}
+                                        titleOfPoster={element.imageTitle}
+                                        writtenBy={element.writtenBy}
+                                        yearOfRelease={element.yearOfRelease} />
+                                </div>
+                            })}
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <Link className="navbar-brand" to="/">
+                <img src="/logo.png" alt="movies4u" className='mb-2 ms-2 mt-2 img-fluid' />
+            </Link>
+            <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/home">
-                        <img src="/favicon.ico" alt="movies4u" />
-                    </Link>
+
+
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <ul className="navbar-nav mb-2 mb-lg-0">
+                            <li className="nav-item">
+                                <Link className={`nav-link ${location.pathname === "/exclusive-updates" ? 'active' : ''}`} to="/exclusive-updates">Exclusive Updates</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className={`nav-link ${location.pathname === "/latest-buzz" ? 'active' : ''}`} to="/latest-buzz">Latest Buzz</Link>
+                            </li>
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/reviews" ? 'active' : ''}`} aria-current="page" to="/reviews">Reviews</Link>
                             </li>
@@ -37,11 +100,26 @@ function Navbar() {
                                 <Link className="nav-link" to="/suggestions">Suggestions</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className={`nav-link ${location.pathname === "/pre-release-business" ? 'active' : ''}`} to="/pre-release-business">Pre Release Business</Link>
+                                <Link className={`nav-link ${location.pathname === "/box-office-collections" ? 'active' : ''}`} to="/box-office-collections">Box Office Collections</Link>
                             </li>
+                            {/* <li className="nav-item">
+                                <Link className={`nav-link ${location.pathname === "/add-post" ? 'active' : ''}`} style={{
+                                    display: user.uid && user.uid === process.env.REACT_APP_ADMIN_UID  ? 'flex' : 'none'
+                                }} to="/add-post">Add Post</Link>
+                            </li> */}
                         </ul>
-                        <Button className='btn btn-primary' onClick={handleLogout}>Sign out</Button>
+                        {/* <Button className='btn btn-primary' onClick={handleLogout}>Sign out</Button> */}
                     </div>
+
+                    {/* <button type="button" className="btn btn-warning " ref={modalRef} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Search
+                    </button> */}
+
+                            <img src={searchicon} alt="searchicon" ref={modalRef} data-bs-toggle="modal" data-bs-target="#exampleModal"/>
+
+                    {/* search icon */}
+
+
                 </div>
             </nav>
         </>

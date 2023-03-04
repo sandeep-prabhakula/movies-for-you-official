@@ -24,3 +24,17 @@
   width: 40px !important;
   height: 38px !important;
 }
+@font-face {
+  font-family: bebasneue;
+  src: url('../public/fonts/BebasNeue-Regular.ttf');
+}
+.bebasneue{
+  font-family: bebasneue;
+}
+@font-face {
+  font-family: lemonMilk;
+  src: url('../public/fonts/LEMONMILK-Bold.otf');
+}
+.lemonMilk{
+  font-family: lemonMilk;
+}

@@ -10,26 +10,24 @@ function Footer() {
 
                     <section className="mt-2">
 
-                        <div className="row text-center d-flex justify-content-center pt-2 mb-2">
-
-                            <div className="col-md-2">
-                                <h6 className="text font-weight-bold">
-                                    <Link to="/about-us" className="text-white text-decoration-none">About us</Link>
-                                </h6>
-                            </div>
-                            <div className="col-md-2">
-                                <h6 className="text font-weight-bold">
-                                    <Link to="/privacy-policy" className="text-white text-decoration-none">Privacy Policy</Link>
-                                </h6>
-                            </div>
-                            <div className="col-md-2">
-                                <h6 className="text font-weight-bold">
-                                    <Link to="/terms-and-conditions" className="text-white text-decoration-none">Terms and Conditions</Link>
-                                </h6>
-                            </div>
+                        <div className="col text-center d-flex justify-content-center pt-2 mb-2">
+                            <h6 className="text font-weight-bold me-3">
+                                <Link to="/about-us" className="text-white text-decoration-none">About us</Link>
+                            </h6>
+                            <h6 className="text font-weight-bold me-3">
+                                <Link to="/privacy-policy" className="text-white text-decoration-none">Privacy Policy</Link>
+                            </h6>
+                            <h6 className="text font-weight-bold me-3">
+                                <Link to="/terms-and-conditions" className="text-white text-decoration-none">Terms and Conditions</Link>
+                            </h6>
+                            <h6 className="text font-weight-bold me-3">
+                                <Link to='/contact-us' className="text-white text-decoration-none">
+                                    Contact Us
+                                </Link>
+                            </h6>
                         </div>
                     </section>
-                    <section className="text-center mb-2">
+                    {/* <section className="text-center mb-2">
                         <a href="https://www.instagram.com/movies4u_official/" className="text-white me-4 text-decoration-none">
                             Instagram
                         </a>
@@ -39,10 +37,7 @@ function Footer() {
                         <a href="https://www.youtube.com/c/Movies4uOfficial" className="text-white me-4 text-decoration-none">
                             YouTube
                         </a>
-                    </section>
-                </div>
-                <div className='text-muted'>
-                    <p>For any issues contact our support team support@movies4uofficial.com</p>
+                    </section> */}
                 </div>
                 <div
                     className="text-center p-3"
