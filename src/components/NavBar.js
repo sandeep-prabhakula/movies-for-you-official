@@ -27,10 +27,18 @@ function Navbar() {
     }
 
 
+    const handleSelect = () => {
+        // document.querySelector('.navbar-collapse').classList.remove('show');
+
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        if (navbarCollapse) {
+            navbarCollapse.classList.remove('show');
+        }
+    }
 
     const onTextChangeListener = (e) => {
         const { value } = e.target
-        const jsonArrayOfItems = JSON.parse(window.localStorage.getItem('allPosts'))
+        const jsonArrayOfItems = JSON.parse(window.sessionStorage.getItem('allPosts'))
         setSearchedPosts(jsonArrayOfItems.filter((item) => {
             return item.title.includes(value) || item.description.includes(value) || item.writtenBy.includes(value)
         }))
@@ -78,7 +86,7 @@ function Navbar() {
             <Link className="navbar-brand" to="/">
                 <img src="/logo.png" alt="movies4u" className='mb-2 ms-2 mt-2 img-fluid' />
             </Link>
-            <nav className="navbar navbar-expand-lg bg-dark navbar-dark">
+            <nav className="navbar navbar-expand-lg bg-dark navbar-dark" onSelect={handleSelect()}>
                 <div className="container-fluid">
 
 
@@ -115,7 +123,7 @@ function Navbar() {
                         Search
                     </button> */}
 
-                            <img src={searchicon} alt="searchicon" ref={modalRef} data-bs-toggle="modal" data-bs-target="#exampleModal"/>
+                    <img src={searchicon} alt="searchicon" ref={modalRef} data-bs-toggle="modal" data-bs-target="#exampleModal" />
 
                     {/* search icon */}
 

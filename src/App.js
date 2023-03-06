@@ -9,33 +9,38 @@ import DetailedPost from "./components/DetailedPost";
 import React from "react";
 import MainPage from "./components/MainPage";
 import { useEffect } from "react";
-import { messaging } from './firebase'
-import { getToken } from 'firebase/messaging'
-import { useState } from "react";
 import { firestore } from './firebase'
 import { collection, onSnapshot } from 'firebase/firestore'
 import Navbar from "./components/NavBar";
 import Footer from "./components/Footer";
 import addNotification from "react-push-notification";
 import ContactUs from "./components/ContactUs";
-import SocialProfiles from "./components/SocialProfiles";
 
 function App() {
   const collectionRef = collection(firestore, 'Posts')
   const findChanges = async () => {
     onSnapshot(collectionRef, (snapshot) => {
-      if (snapshot.docChanges().length > JSON.parse(window.sessionStorage.getItem('allPosts')).length) {
-
-        // if collection have changes then data will be refeshed and stored in local storage.
-        // Also website get notified
-        addNotification({
-          title: "Update 🔔",
-          message: 'Tap to view more',
-          duration: 5000,
-          native: true,
-        })
-      }
-
+      // if (snapshot.docChanges().length > JSON.parse(window.sessionStorage.getItem('allPosts')).length) {
+      //   console.log('in notification')
+      //   // if collection have changes then data will be refeshed and stored in local storage.
+      //   // Also website get notified
+      //   addNotification({
+      //     title: "Update 🔔",
+      //     message: 'Tap to view more',
+      //     duration: 5000,
+      //     native: true,
+      //   })
+      // }
+      snapshot.docChanges().forEach((item) => {
+        if (item.type === 'added') {
+          addNotification({
+            title: "Update 🔔",
+            message: 'Tap to view more',
+            duration: 5000,
+            native: true,
+          })
+        }
+      })
       // else nothing will happen 
     })
   }
@@ -62,7 +67,11 @@ function App() {
       //request for permission.
       requestNotificationPermission()
     }
-  }, [])
+
+  },[])
+
+
+
 
 
   const requestNotificationPermission = async () => {
@@ -78,8 +87,7 @@ function App() {
     <>
       <UserAuthContextProvider>
         <Router>
-          <Navbar />
-          <SocialProfiles />
+          {/* <Navbar /> */}
           <Routes>
             <Route exact path="/" element={<MainPage />} />
             <Route exact path="/exclusive-updates" element={<Home postType="Exclusive Updates" />} />

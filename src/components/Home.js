@@ -4,6 +4,8 @@ import { useState } from "react";
 import { onSnapshot, collection, query, where, orderBy, } from 'firebase/firestore'
 import { firestore } from '../firebase'
 import ReviewItem from "./ReviewItem";
+import SocialProfiles from "./SocialProfiles";
+import Navbar from "./NavBar";
 
 const Home = (props) => {
   const [reviews, setReviews] = useState([])
@@ -14,17 +16,17 @@ const Home = (props) => {
 
     // Compound Queries
 
-    const q = query(collectionRef, where('postType', "==", props.postType))
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setReviews(snapshot.docs.map(doc => doc.data()).reverse())
-    })
-    return unsubscribe
+    // const q = query(collectionRef, where('postType', "==", props.postType))
+    // const unsubscribe = onSnapshot(q, (snapshot) => {
+    //   setReviews(snapshot.docs.map(doc => doc.data()).reverse())
+    // })
+    // return unsubscribe
 
     
-    // const posts = JSON.parse(window.localStorage.getItem('allPosts'))
-    // setReviews(posts.filter((item)=>{
-    //   return item.postType === props.postType
-    // }))
+    const posts = JSON.parse(window.sessionStorage.getItem('allPosts'))
+    setReviews(posts.filter((item)=>{
+      return item.postType === props.postType
+    }))
   }
 
 
@@ -39,6 +41,8 @@ const Home = (props) => {
 
   return (
     <div>
+      <Navbar/>
+      <SocialProfiles />
       <div className='container'>
         <h1 className="bebasneue">{props.postType} : </h1>
         <div className="row">

@@ -4,23 +4,23 @@ import { Link } from 'react-router-dom'
 function Footer() {
     return (
         <>
-            <footer className="text-center text-white" style={{ backgroundColor: "#212529" }}>
+            <footer className="footer text-center text-white " style={{ backgroundColor: "#212529"}}>
 
                 <div className="container">
 
                     <section className="mt-2">
 
                         <div className="col text-center d-flex justify-content-center pt-2 mb-2">
-                            <h6 className="text font-weight-bold me-3">
+                            <h6 className="text me-3">
                                 <Link to="/about-us" className="text-white text-decoration-none">About us</Link>
                             </h6>
-                            <h6 className="text font-weight-bold me-3">
+                            <h6 className="text me-3">
                                 <Link to="/privacy-policy" className="text-white text-decoration-none">Privacy Policy</Link>
                             </h6>
-                            <h6 className="text font-weight-bold me-3">
+                            <h6 className="text me-3">
                                 <Link to="/terms-and-conditions" className="text-white text-decoration-none">Terms and Conditions</Link>
                             </h6>
-                            <h6 className="text font-weight-bold me-3">
+                            <h6 className="text me-3">
                                 <Link to='/contact-us' className="text-white text-decoration-none">
                                     Contact Us
                                 </Link>

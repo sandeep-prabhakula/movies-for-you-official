@@ -38,3 +38,17 @@
 .lemonMilk{
   font-family: lemonMilk;
 }
+@font-face {
+  font-family: openSans;
+  src: url('../public/fonts/OpenSans-Regular.ttf');
+}
+.openSans{
+  font-family: openSans;
+}
+@font-face {
+  font-family: cobertCondesnedItalic;
+  src: url('../public/fonts/CobertCondensedItalic.otf');
+}
+.cobertCondesnedItalic{
+  font-family: cobertCondesnedItalic;
+}
