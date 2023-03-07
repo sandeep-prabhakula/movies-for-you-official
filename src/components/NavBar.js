@@ -63,7 +63,7 @@ function Navbar() {
 
 
                             {searchedPosts.map((element) => {
-                                return <div key={element.postedTime} className="col-md-3">
+                                return <div key={element.postedTime} className="row-md-3 mt-3">
                                     <ReviewItem title={element.title ? element.title : ""}
                                         description={element.description ? element.description : ""}
                                         imageURL={element.imageURL ? element.imageURL : "https://i.ytimg.com/vi/z2T9NDVpzXk/hqdefault.jpg"}

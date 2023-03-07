@@ -38,6 +38,7 @@ function MainPage() {
         <>
             <SocialProfiles />
             <div className='container'>
+                <h1 className='bebasneue'>Latest Posts :</h1>
                 <div className="row">
                     {topThreePosts.map((element) => {
                         return <div key={element.postedTime} className="col-md-3">
