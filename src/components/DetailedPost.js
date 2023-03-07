@@ -14,6 +14,15 @@ function DetailedPost() {
 
     const [currentPost, setCurrentPost] = useState({})
 
+    // post parameters
+    const [title,setTitle] = useState('')
+    const [description,setDescription] = useState('')
+    const [imageTitle,setImageTitle] = useState('')
+    const [writtenBy,setWrittenBy] = useState('')
+    const [postType,setPostType] = useState('')
+    const [postedTime,setPostedTime] = useState('')
+    const [imageURL,setImageURL] = useState('')
+    
     const location = useLocation();
 
     const { postID } = useParams();
@@ -59,7 +68,7 @@ function DetailedPost() {
     }
 
     const getAllComments = async () => {
-        const ref = doc(firestore, 'Comments', `${currentPost.id}`)
+        const ref = doc(firestore, 'Comments', `${postID}`)
         const docSnap = await getDoc(ref)
         const data = docSnap.data()
         setcommentsListState(data.commentsList)
@@ -71,12 +80,16 @@ function DetailedPost() {
         allPosts = allPosts.filter((item) => {
             return item.postedTime === Number(postID)
         })
-        setCurrentPost(allPosts[0])
+        // setCurrentPost(allPosts[0])
+        setTitle(allPosts[0].title)
+        setDescription(allPosts[0].description)
+        setImageTitle(allPosts[0].imageTitle)
+        setPostType(allPosts[0].postType)
+        setPostedTime(allPosts[0].postedTime)
+        setWrittenBy(allPosts[0].writtenBy)
+        setImageURL(allPosts[0].imageURL)
         getRecentPosts()
-        let dateAndTime = new Date(currentPost.postedTime)
-        let stringDate = dateAndTime.toString().slice(0,21)
-        setPostedDate(stringDate)
-    }, [])
+    }, [postID])
 
 
     const handleComment = (e) => {
@@ -89,46 +102,45 @@ function DetailedPost() {
 
     return (
         <>
-            <Navbar />
             <nav style={{
                 "--bs-breadcrumb-divider": "url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;)",
 
             }} aria-label="breadcrumb" className='ms-2'>
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item ">
+                    <li className=" me-1">
                         <small className='cobertCondesnedItalic' style={{ fontSize: '10px' }}>
-                            Movies4U-Official
+                            Movies4U-Official &lt; 
                         </small>
                     </li>
-                    <li className="breadcrumb-item">
+                    <li className="me-1">
                         <small className='cobertCondesnedItalic' style={{ fontSize: '10px' }}>
-                            {currentPost.postType}
+                            {postType} &lt; 
                         </small>
                     </li>
-                    <li className="breadcrumb-item active" aria-current="page">
+                    <li className=" active" aria-current="page">
                         <small className='cobertCondesnedItalic' style={{ fontSize: '10px' }}>
-                            {currentPost.title}
+                            {(navigator.userAgent.indexOf('Android')!==-1) && title.length>15?title.substring(0,35)+"...":" "+title}
                         </small>
                     </li>
                 </ol>
             </nav>
 
             <div className="container d-flex flex-column justify-content-center">
-                <h1 className="bebasneue">{currentPost.title}</h1>
+                <h1 className="bebasneue">{title}</h1>
                 <div className='container d-flex flex-column justify-content-between align-items-end'>
 
                     <small className='cobertCondesnedItalic'>
-                        {new Date(currentPost.postedTime).toString().slice(3,21)} - {currentPost.writtenBy}
+                        {new Date(postedTime).toString().slice(4,21).split(/[ ,]+/).join('-')} - {writtenBy}
                     </small>
                 </div>
-                <img src={currentPost.imageURL} alt={currentPost.title} className='img-fluid' />
+                <img src={imageURL} alt={title} className='img-fluid' />
                 <div className='container d-flex flex-column justify-content-center align-items-center'>
 
-                    <small className='cobertCondesnedItalic mt-2' style={{ fontSize: '10px' }}>{currentPost.imageTitle}</small>
+                    <small className='cobertCondesnedItalic mt-2' style={{ fontSize: '10px' }}>{imageTitle}</small>
                 </div>
                 <p className='openSans mt-3'>
 
-                    {currentPost.description}
+                    {description}
                 </p>
             </div>
             <div className="container">

@@ -36,7 +36,6 @@ function MainPage() {
 
     return (
         <>
-            <Navbar/>
             <SocialProfiles />
             <div className='container'>
                 <div className="row">

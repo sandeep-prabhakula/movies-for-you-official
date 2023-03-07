@@ -2,7 +2,7 @@ import React from 'react'
 
 function AboutUs() {
     return (
-        <div className="container">
+        <div className="container mt-2">
             <article>
                 <section>
                     <header>

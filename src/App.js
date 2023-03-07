@@ -15,32 +15,35 @@ import Navbar from "./components/NavBar";
 import Footer from "./components/Footer";
 import addNotification from "react-push-notification";
 import ContactUs from "./components/ContactUs";
+import Disclaimer from "./components/Disclaimer";
 
 function App() {
   const collectionRef = collection(firestore, 'Posts')
   const findChanges = async () => {
     onSnapshot(collectionRef, (snapshot) => {
-      // if (snapshot.docChanges().length > JSON.parse(window.sessionStorage.getItem('allPosts')).length) {
-      //   console.log('in notification')
-      //   // if collection have changes then data will be refeshed and stored in local storage.
-      //   // Also website get notified
-      //   addNotification({
-      //     title: "Update 🔔",
-      //     message: 'Tap to view more',
-      //     duration: 5000,
-      //     native: true,
-      //   })
-      // }
-      snapshot.docChanges().forEach((item) => {
-        if (item.type === 'added') {
-          addNotification({
-            title: "Update 🔔",
-            message: 'Tap to view more',
-            duration: 5000,
-            native: true,
-          })
-        }
-      })
+      if (snapshot.docChanges().length > JSON.parse(window.sessionStorage.getItem('allPosts')).length) {
+      
+        // if collection have changes then data will be refeshed and stored in local storage.
+        // Also website get notified
+        addNotification({
+          title: "Update 🔔",
+          message: 'Tap to view more',
+          duration: 5000,
+          native: true,
+        })
+      }
+      
+      
+      // snapshot.docChanges().forEach((item) => {
+      //   if (item.type === 'added') {
+      //     addNotification({
+      //       title: "Update 🔔",
+      //       message: 'Tap to view more',
+      //       duration: 5000,
+      //       native: true,
+      //     })
+      //   }
+      // })
       // else nothing will happen 
     })
   }
@@ -54,7 +57,6 @@ function App() {
 
 
   useEffect(() => {
-
     // Notification dependency is installed using npm install react-push-notification --force
 
     getAllPosts()
@@ -87,7 +89,7 @@ function App() {
     <>
       <UserAuthContextProvider>
         <Router>
-          {/* <Navbar /> */}
+          <Navbar />
           <Routes>
             <Route exact path="/" element={<MainPage />} />
             <Route exact path="/exclusive-updates" element={<Home postType="Exclusive Updates" />} />
@@ -104,7 +106,7 @@ function App() {
             <Route exact path='/about-us' element={<AboutUs />} />
             <Route exact path="/contact-us" element={<ContactUs />} />
             <Route path='/posts/:postID' element={<DetailedPost />} />
-
+            <Route exact path='/disclaimer' element={<Disclaimer/>}/>
           </Routes>
           <Footer></Footer>
         </Router>

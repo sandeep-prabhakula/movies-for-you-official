@@ -84,7 +84,7 @@ function Navbar() {
 
 
             <Link className="navbar-brand" to="/">
-                <img src="/logo.png" alt="movies4u" className='mb-2 ms-2 mt-2 img-fluid' />
+                <img src="/logo.png" alt="movies4u" className='mb-2 ms-2 mt-2 img-fluid'/>
             </Link>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark" onSelect={handleSelect()}>
                 <div className="container-fluid">
