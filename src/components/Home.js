@@ -41,6 +41,7 @@ const Home = (props) => {
 
   return (
     <div>
+      <Navbar />
       <SocialProfiles />
       <div className='container'>
         <h1 className="bebasneue">{props.postType} : </h1>

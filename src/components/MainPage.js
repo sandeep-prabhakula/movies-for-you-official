@@ -28,7 +28,7 @@ function MainPage() {
         // }
         // setTopThreePosts(temp)
         // }
-        
+
     }
     useEffect(() => {
         getTopPosts()
@@ -36,6 +36,7 @@ function MainPage() {
 
     return (
         <>
+            <Navbar />
             <SocialProfiles />
             <div className='container'>
                 <h1 className='bebasneue'>Latest Posts :</h1>
@@ -57,7 +58,7 @@ function MainPage() {
 
 
                 {/* Youtube Embeds */}
-                
+
                 {/* <div className="col my-3 ms-3">
                     <h3 className="bebasneue">Recent Uploads: </h3>
 

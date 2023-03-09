@@ -14,7 +14,7 @@ function Footer() {
                             <small className="text me-3" style={{
                                 fontSize:'10px'
                             }}>
-                                <Link to="/about-us" className="text-white text-decoration-none">About us</Link>
+                                <Link to="/about-us" className="text-white text-decoration-none">About Us</Link>
                             </small>
                             <small className="text me-3" style={{
                                 fontSize:'10px'

@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function ContactUs() {
+    useEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
     return (
         <div className="container mt-2">
             <article>
                 <header>
-                    <h1>
-                        Contact Us
-                    </h1>
+                    <h2>
+                        <strong>
+                            Contact Us
+                        </strong>
+                    </h2>
                 </header>
                 <p>
                     Thank you for your interest in  Movies4u Official! We welcome any questions, comments, or feedback you may have about our website.

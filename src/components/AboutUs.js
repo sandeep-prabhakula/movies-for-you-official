@@ -1,12 +1,19 @@
 import React from 'react'
-
+import { useEffect } from 'react'
 function AboutUs() {
+    useEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
     return (
         <div className="container mt-2">
             <article>
                 <section>
                     <header>
-                        <h1>About Movies4U</h1>
+                        <h2>
+                            <strong>
+                                About Movies4U
+                            </strong>
+                        </h2>
                     </header>
                     <p>Welcome to Movies4U
                         Welcome to Movies4u, your ultimate destination for everything related to movies! We are a team of dedicated movie enthusiasts who are passionate about bringing you the latest updates, reviews, and insights on all things related to the world of cinema.</p>

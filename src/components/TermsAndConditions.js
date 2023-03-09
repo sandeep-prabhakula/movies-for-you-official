@@ -1,6 +1,11 @@
 import React from 'react'
+import { useEffect } from 'react'
 
 function TermsAndConditions() {
+    useEffect(() => {
+      window.scrollTo(0,0)
+    }, [])
+    
     return (
         <div className='container mt-2'>
             <h2><strong>Terms and Conditions</strong></h2>
@@ -8,7 +13,7 @@ function TermsAndConditions() {
                 <strong>Use of Content:</strong>   All content published on this website is exclusively for personal use only. Visitors may not use the content for commercial purposes, reproduction, or distribution without obtaining prior written consent from the website owner.
             </p>
             <p>
-                <strong>Accuracy</strong>  of Information: The website owner makes every effort to ensure that all information provided on the website is accurate and up-to-date. However, visitors must use their discretion before relying on any information provided on the website.
+                <strong>Accuracy of Information:</strong>   The website owner makes every effort to ensure that all information provided on the website is accurate and up-to-date. However, visitors must use their discretion before relying on any information provided on the website.
             </p>
             <p>
                 <strong>Copyright:</strong>  All content, including text, images, graphics, videos, and other media, is protected by copyright and intellectual property laws. Visitors may not reproduce, distribute, or use any content without obtaining prior written consent from the website owner.

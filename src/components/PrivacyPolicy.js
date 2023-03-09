@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function PrivacyPolicy() {
+    useEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
     return (
         <div className='container mt-2'>
-            <h1>Privacy Policy</h1>
+            <h2>
+                <strong>
+                    Privacy Policy
+                </strong>
+            </h2>
             <p>
 
                 Thank you for visiting our website, which is operated by Movies4u. We are committed to protecting the privacy of our users, and this Privacy Policy is designed to explain how we collect, use, and disclose information about you when you use our website.

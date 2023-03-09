@@ -37,6 +37,8 @@ export function UserAuthContextProvider({ children }) {
       // console.log("Auth", currentuser);
       setUser(currentuser);
     });
+    window.localStorage.setItem('currentUser',JSON.stringify(user))
+  
 
     return () => {
       unsubscribe();
