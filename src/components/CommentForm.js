@@ -42,23 +42,25 @@ function CommentForm(props) {
     }
 
     return (
-        <div className="container">
+        <div className="container mt-2">
             <h3 className='bebasneue'>Add Comment : </h3>
-            <Form onSubmit={onSubmitComment}>
-                <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-                    <input type="email" className="form-control" id="exampleFormControlInput1" value={commentorName} placeholder="name@example.com" onChange={handleCommentorName} />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Comment</label>
-                    <textarea value={comment} className="form-control" id="exampleFormControlTextarea1" rows="2" onChange={handleComment}></textarea>
-                </div>
-                <div className="d-grid gap-2">
-                    <Button variant="primary" type="submit">
-                        Upload Comment
-                    </Button>
-                </div>
-            </Form>
+            <div className="container">
+                <Form onSubmit={onSubmitComment}>
+                    <div className="mb-3">
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Email address : </label>
+                        <input type="email" className="form-control" id="exampleFormControlInput1" value={commentorName} placeholder="name@example.com" onChange={handleCommentorName} />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Comment : </label>
+                        <textarea value={comment} className="form-control" id="exampleFormControlTextarea1" rows="2" onChange={handleComment}></textarea>
+                    </div>
+                    <div className="d-grid gap-2">
+                        <Button variant="primary" type="submit">
+                            Upload Comment
+                        </Button>
+                    </div>
+                </Form>
+            </div>
         </div>
     )
 }

@@ -25,7 +25,7 @@ function App() {
   const collectionRef = collection(firestore, 'Posts')
   const findChanges = async () => {
     onSnapshot(collectionRef, (snapshot) => {
-      if (snapshot.docChanges().length > JSON.parse(window.sessionStorage.getItem('allPosts')).length) {
+      if (snapshot.docChanges().length > JSON.parse(window.localStorage.getItem('allPosts')).length) {
       
         // if collection have changes then data will be refeshed and stored in local storage.
         // Also website get notified
@@ -57,6 +57,7 @@ function App() {
   const getAllPosts = async () => {
     onSnapshot(collectionRef, (snapshot) => {
       window.sessionStorage.setItem('allPosts', JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+      window.localStorage.setItem('allPosts', JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
     })
     setAllPosts(JSON.parse(window.sessionStorage.getItem('allPosts')))
   }
@@ -64,7 +65,6 @@ function App() {
 
   useEffect(() => {
     // Notification dependency is installed using npm install react-push-notification --force
-
     getAllPosts()
 
     // compulsory for permission access check.
