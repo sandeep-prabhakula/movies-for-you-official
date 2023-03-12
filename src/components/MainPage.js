@@ -42,7 +42,7 @@ function MainPage() {
                 <h1 className='bebasneue'>Latest Posts :</h1>
                 <div className="row">
                     {topThreePosts.map((element) => {
-                        return <div key={element.postedTime} className="col-md-3">
+                        return <div key={element.postedTime} className="col-lg-3 d-flex align-items-stretch">
                             <ReviewItem title={element.title ? element.title : ""}
                                 description={element.description ? element.description : ""}
                                 imageURL={element.imageURL ? element.imageURL : "https://i.ytimg.com/vi/z2T9NDVpzXk/hqdefault.jpg"}

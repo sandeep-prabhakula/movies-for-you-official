@@ -11,48 +11,24 @@ import MainPage from "./components/MainPage";
 import { useEffect } from "react";
 import { firestore } from './firebase'
 import { collection, onSnapshot } from 'firebase/firestore'
-import Navbar from "./components/NavBar";
 import Footer from "./components/Footer";
-import addNotification from "react-push-notification";
 import ContactUs from "./components/ContactUs";
 import Disclaimer from "./components/Disclaimer";
 import Login from './components/Login'
 import Signup from './components/Signup'
-import  ForgotPassword from './components/ForgotPassword'
+import ForgotPassword from './components/ForgotPassword'
 import NotFound from "./components/NotFound";
-
+import OneSignal from 'react-onesignal';
 function App() {
   const collectionRef = collection(firestore, 'Posts')
-  const findChanges = async () => {
-    onSnapshot(collectionRef, (snapshot) => {
-      if (snapshot.docChanges().length > JSON.parse(window.localStorage.getItem('allPosts')).length) {
-      
-        // if collection have changes then data will be refeshed and stored in local storage.
-        // Also website get notified
-        addNotification({
-          title: "Update 🔔",
-          message: 'Tap to view more',
-          duration: 5000,
-          native: true,
-        })
-      }
-      
-      
-      // snapshot.docChanges().forEach((item) => {
-      //   if (item.type === 'added') {
-      //     addNotification({
-      //       title: "Update 🔔",
-      //       message: 'Tap to view more',
-      //       duration: 5000,
-      //       native: true,
-      //     })
-      //   }
-      // })
-      // else nothing will happen 
-    })
+
+  const runOneSignal = async () => {
+    await OneSignal.init({ appId: process.env.REACT_APP_ONE_SIGNAL_APP_ID, allowLocalhostAsSecureOrigin: true });
+    OneSignal.showSlidedownPrompt();
+    
   }
 
-  const[allPosts,setAllPosts] = useState([])
+  const [allPosts, setAllPosts] = useState([])
 
   const getAllPosts = async () => {
     onSnapshot(collectionRef, (snapshot) => {
@@ -62,34 +38,12 @@ function App() {
     setAllPosts(JSON.parse(window.sessionStorage.getItem('allPosts')))
   }
 
-
   useEffect(() => {
-    // Notification dependency is installed using npm install react-push-notification --force
     getAllPosts()
 
-    // compulsory for permission access check.
+    runOneSignal()
 
-    if (Notification.permission === 'granted') {
-      findChanges()
-    } else {
-      //request for permission.
-      requestNotificationPermission()
-    }
-
-  },[])
-
-
-
-
-
-  const requestNotificationPermission = async () => {
-    const permission = await Notification.requestPermission()
-    if (permission === 'granted') {
-      console.log('permission granted')
-    } else if (permission === 'denied') {
-      console.log('access denied')
-    }
-  }
+  }, [])
 
   return (
     <>
@@ -110,9 +64,9 @@ function App() {
             <Route exact path='/terms-and-conditions' element={<TermsAndConditions />} />
             <Route exact path='/about-us' element={<AboutUs />} />
             <Route exact path="/contact-us" element={<ContactUs />} />
-            <Route path='/posts/:postID' element={<DetailedPost allPosts={allPosts}/>} />
-            <Route exact path='/disclaimer' element={<Disclaimer/>}/>
-            <Route path='*' element={<NotFound/>}/>
+            <Route path='/posts/:postID' element={<DetailedPost allPosts={allPosts} />} />
+            <Route exact path='/disclaimer' element={<Disclaimer />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
           <Footer></Footer>
         </Router>
