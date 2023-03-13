@@ -83,9 +83,12 @@ function Navbar() {
             </div>
 
 
-            <Link className="navbar-brand" to="/">
-                <img src="/logo.png" alt="movies4u" className='mb-2 ms-2 mt-2 img-fluid'/>
-            </Link>
+{/* logo link */}
+            <div className='d-flex flex-row justify-content-center align-items-center '>
+                <Link className="navbar-brand" to="/">
+                    <img src="/logo.png" alt="movies4u" className='img-fluid' />
+                </Link>
+            </div>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark" onSelect={handleSelect()}>
                 <div className="container-fluid">
 
@@ -97,6 +100,9 @@ function Navbar() {
                         <ul className="navbar-nav mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/exclusive-updates" ? 'active' : ''}`} to="/exclusive-updates">Exclusive Updates</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className={`nav-link ${location.pathname === "/latest-updates" ? 'active' : ''}`} to="/latest-updates">Latest Updates</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/latest-buzz" ? 'active' : ''}`} to="/latest-buzz">Latest Buzz</Link>

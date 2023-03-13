@@ -27,7 +27,7 @@ function ContactUs() {
                     </a>. We also encourage you to follow us on social media for the latest updates and news on all your favorite movies. You can find us on  <a href="https://twitter.com/movies4u_officl" target='
                     '>Twitter</a>, <a href="https://www.instagram.com/movies4u_official/" target='
                     '>Instagram</a>, <a href="https://www.youtube.com/c/Movies4uOfficial" target='
-                    '>Youtube</a>.
+                    '>Youtube</a>, <a href="https://telegram.dog/+vXr3hWTAKJg3Mzg1">Telegram</a>.
 
                     Thank you again for your interest in Movies4u. We look forward to hearing from you soon!
 
