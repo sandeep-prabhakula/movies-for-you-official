@@ -7,8 +7,8 @@ import HorizontalCard from './HorizontalCard'
 function PostYouMightLike(props) {
     
     return (
-        <div className="container mt-2">
-            <h3 className='bebasneue'>Posts You Might Also like: </h3>
+        <div className="container mt-3">
+            <h3 className='bebasneue'>Posts You Might like: </h3>
             <div className="row d-flex flex-row">
                 {props.recentPosts.map((element) => {
 

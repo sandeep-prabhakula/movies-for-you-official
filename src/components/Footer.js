@@ -10,7 +10,7 @@ function Footer() {
 
                     <section className="mt-2">
 
-                        <div className="col text-center d-flex flex-wrap justify-content-center pt-2 mb-2">
+                        <div className="col text-center d-flex flex-wrap justify-content-center mb-2">
                             <small className="text me-3" style={{
                                 fontSize:'10px'
                             }}>

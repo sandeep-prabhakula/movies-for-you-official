@@ -5,9 +5,12 @@ import { useEffect, useState } from 'react';
 import ReviewItem from './ReviewItem';
 import SocialProfiles from './SocialProfiles';
 import Navbar from './NavBar';
+import Carousal from './Carousal';
+import {virtualCards} from '../dummyDataAPI'
 function MainPage() {
     const collectionRef = collection(firestore, 'Posts')
     const [topThreePosts, setTopThreePosts] = useState([])
+    const [slides,setSlides] = useState([])
     const getTopPosts = async () => {
 
         // Compound Queries
@@ -31,7 +34,9 @@ function MainPage() {
 
     }
     useEffect(() => {
-        getTopPosts()
+        // getTopPosts()
+        setSlides(virtualCards)
+        // console.log(virtualCards)
     }, [])
 
     return (
@@ -39,10 +44,10 @@ function MainPage() {
             <Navbar />
             <SocialProfiles />
             <div className='container'>
-                <h1 className='bebasneue'>Latest Posts :</h1>
-                <div className="row">
+                {/* <h1 className='bebasneue'>Exclusive Updates :</h1> */}
+                {/* <div className="row">
                     {topThreePosts.map((element) => {
-                        return <div key={element.postedTime} className="col-md-3 ">
+                        return <div key={element.postedTime} className="col-md-3 d-flex align-items-stretch">
                             <ReviewItem title={element.title ? element.title : ""}
                                 description={element.description ? element.description : ""}
                                 imageURL={element.imageURL ? element.imageURL : "https://i.ytimg.com/vi/z2T9NDVpzXk/hqdefault.jpg"}
@@ -54,7 +59,38 @@ function MainPage() {
                                 yearOfRelease={element.yearOfRelease} />
                         </div>
                     })}
-                </div>
+                </div> */}
+                
+                
+                <Carousal postType='Exclusive Updates' slides={slides.filter((item)=>{
+                    return item.postType ==='Exclusive Updates'
+                })}/>
+
+                {/* <h1 className='bebasneue'>Latest Updates : </h1> */}
+                <Carousal postType='Latest Updates' slides={slides.filter((item)=>{
+                    return item.postType ==='Latest Updates'
+                })}/>
+
+                {/* <h1 className='bebasneue'>Latest Buzz : </h1> */}
+                <Carousal postType='Latest Buzz' slides={slides.filter((item)=>{
+                    return item.postType ==='Latest Buzz'
+                })}/>
+
+                {/* <h1 className='bebasneue'>Reviews : </h1> */}
+                <Carousal postType='Reviews' slides={slides.filter((item)=>{
+                    return item.postType ==='Reviews'
+                })}/>
+
+                {/* <h1 className='bebasneue'>Suggestions : </h1> */}
+                <Carousal postType='Suggestions' slides={slides.filter((item)=>{
+                    return item.postType ==='Suggestions'
+                })}/>
+
+                {/* <h1 className='bebasneue'>Box Office Collections : </h1> */}
+                <Carousal postType='Box Office Collections' slides={slides.filter((item)=>{
+                    return item.postType ==='Box Office Collections'
+                })}/>
+
 
 
                 {/* Youtube Embeds */}

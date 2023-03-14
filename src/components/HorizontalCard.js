@@ -6,7 +6,7 @@ function HorizontalCard(props) {
         navigate(`/posts/${props.id}`)
     }
     return (
-        <div className="hc d-flex flex-row align-items-center border border-dark border-2 mt-2" onClick={viewDetailedPost} style={{
+        <div className="hc d-flex align-items-center border border-dark border-1 mt-3" onClick={viewDetailedPost} style={{
             cursor:'pointer'
         }}>
             <div className="poster-division" >
@@ -23,6 +23,15 @@ function HorizontalCard(props) {
                 <small className='lemonMilk' >{props.title}</small>
             </div>
         </div>
+
+        // <div className="card mb-2 border border-dark border-1 d-flex" onClick={viewDetailedPost} style={{
+        //     cursor: 'pointer',
+        // }}>
+        //     <img src={props.imageURL} className="card-img-top img-fluid" alt="..." />
+        //     <div className="card-body">
+        //         <p className="lemonMilk card-text" style={{ lineHeight: '20px' }}>{props.title}</p>
+        //     </div>
+        // </div>
     )
 }
 

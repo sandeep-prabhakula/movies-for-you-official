@@ -13,6 +13,7 @@ import PostYouMightLike from './PostYouMightLike';
 import UserComments from './UserComments';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from "../context/UserAuthContext";
+import Footer from './Footer';
 
 function DetailedPost(props) {
     // postID from url

@@ -5,10 +5,10 @@
   align-content: center;
   width: 100%;
   align-items: center;
-  height: 100%;
 } */
 body{
   scroll-behavior:smooth;
+  height: 100%;
 }
 .box {
   border: 1px solid #dfdfdf;
