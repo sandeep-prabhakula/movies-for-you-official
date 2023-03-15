@@ -9,6 +9,7 @@
 body{
   scroll-behavior:smooth;
   height: 100%;
+  overflow-x: hidden;
 }
 .box {
   border: 1px solid #dfdfdf;
@@ -53,4 +54,11 @@ body{
 }
 .cobertCondesnedItalic{
   font-family: cobertCondesnedItalic;
+}
+@font-face {
+  font-family: nexa;
+  src: url('../public/fonts/Nexa-Heavy.ttf');
+}
+.nexa{
+  font-family: nexa;
 }

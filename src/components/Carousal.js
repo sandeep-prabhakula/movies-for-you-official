@@ -1,11 +1,16 @@
 import React from 'react'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import CarouselItem from './CarouselItem';
+
 
 function Carousal(props) {
-    const cards = props.slides.reverse().slice(0,4)
+
+    const cards = props.slides.slice(0,5)
     return (
-        <div className="container mt-3 mb-1">
+        <div className="container mt-3 mb-1" style={{
+            display:`${cards.length!==0?'block':'none'}`
+        }}>
             <h1 className='bebasneue'>{props.postType}</h1>
             <Carousel
                 responsive={{
@@ -29,13 +34,8 @@ function Carousal(props) {
             >
                 {cards?cards.map((item, index) => (
 
-                    <div key={item.postedTime} className='me-2'>
-                        <div className="card bg-dark text-white">
-                            <img src={item.imageURL} class="card-img img-fluid" alt="..."/>
-                                <div className="card-img-overlay position-relative bottom-0">
-                                    <small className="lemonMilk">{item.title}</small>
-                                </div>
-                        </div>
+                    <div key={item.postedTime} className='me-2 container' >
+                        <CarouselItem postedTime={item.postedTime} imageURL={item.imageURL} title={item.title} />
                     </div>
                 )):console.log('...')}
             </Carousel>

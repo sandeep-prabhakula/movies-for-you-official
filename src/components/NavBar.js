@@ -84,9 +84,9 @@ function Navbar() {
 
 
 {/* logo link */}
-            <div className='d-flex flex-row justify-content-center align-items-center '>
-                <Link className="navbar-brand" to="/">
-                    <img src="/logo.png" alt="movies4u" className='img-fluid' />
+            <div className=''>
+                <Link className="" to="/">
+                    <img src="/logo5.jpg" alt="movies4u" className='img-fluid ' />
                 </Link>
             </div>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark" onSelect={handleSelect()}>

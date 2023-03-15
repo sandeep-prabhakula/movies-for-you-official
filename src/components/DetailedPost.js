@@ -13,7 +13,6 @@ import PostYouMightLike from './PostYouMightLike';
 import UserComments from './UserComments';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from "../context/UserAuthContext";
-import Footer from './Footer';
 
 function DetailedPost(props) {
     // postID from url
@@ -52,13 +51,13 @@ function DetailedPost(props) {
          let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
          if (allPosts !== null && allPosts.length !== 0) {
              let tempRecentPosts = []
-             if (allPosts.length <= 3) {
+             if (allPosts.length <= 5) {
                  setRecentPosts(allPosts.filter((item) => {
                      return item.postedTime !== Number(postID)
                  }))
              }
              else {
-                 for (let i = 0; i <= 3; i++) {
+                 for (let i = 0; i <= 5; i++) {
                      if (Number(postID) !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
                  }
  

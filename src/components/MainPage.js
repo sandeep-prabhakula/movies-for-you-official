@@ -6,20 +6,20 @@ import ReviewItem from './ReviewItem';
 import SocialProfiles from './SocialProfiles';
 import Navbar from './NavBar';
 import Carousal from './Carousal';
-import {virtualCards} from '../dummyDataAPI'
+import { virtualCards } from '../dummyDataAPI'
 function MainPage() {
     const collectionRef = collection(firestore, 'Posts')
     const [topThreePosts, setTopThreePosts] = useState([])
-    const [slides,setSlides] = useState([])
+    const [slides, setSlides] = useState([])
     const getTopPosts = async () => {
 
         // Compound Queries
 
-        const q = query(collectionRef, orderBy('postedTime', 'desc'), limit(3))
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            setTopThreePosts(snapshot.docs.map(doc => doc.data()))
-        })
-        return unsubscribe
+        // const q = query(collectionRef, orderBy('postedTime', 'desc'), limit(3))
+        // const unsubscribe = onSnapshot(q, (snapshot) => {
+        //     setTopThreePosts(snapshot.docs.map(doc => doc.data()))
+        // })
+        // return unsubscribe
 
 
         // const posts = JSON.parse(window.sessionStorage.getItem('allPosts'))
@@ -31,12 +31,22 @@ function MainPage() {
         // }
         // setTopThreePosts(temp)
         // }
+        let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
+        if (allPosts !== null && allPosts.length !== 0) {
+            setSlides(JSON.parse(window.sessionStorage.getItem('allPosts')))
+        }else{
+            const docRef = collection(firestore, 'Posts')
+             onSnapshot(docRef, (snapshot) => {
+                 let data = snapshot.docs.map(doc => doc.data())
+                 setSlides(data)
+             })
+        }
+
 
     }
     useEffect(() => {
-        // getTopPosts()
-        setSlides(virtualCards)
-        // console.log(virtualCards)
+        getTopPosts()
+        // setSlides(virtualCards)
     }, [])
 
     return (
@@ -60,36 +70,36 @@ function MainPage() {
                         </div>
                     })}
                 </div> */}
-                
-                
-                <Carousal postType='Exclusive Updates' slides={slides.filter((item)=>{
-                    return item.postType ==='Exclusive Updates'
-                })}/>
+
+
+                <Carousal postType='Exclusive Updates' slides={slides.filter((item) => {
+                    return item.postType === 'Exclusive Updates'
+                })} />
 
                 {/* <h1 className='bebasneue'>Latest Updates : </h1> */}
-                <Carousal postType='Latest Updates' slides={slides.filter((item)=>{
-                    return item.postType ==='Latest Updates'
-                })}/>
+                <Carousal postType='Latest Updates' slides={slides.filter((item) => {
+                    return item.postType === 'Latest Updates'
+                })} />
 
                 {/* <h1 className='bebasneue'>Latest Buzz : </h1> */}
-                <Carousal postType='Latest Buzz' slides={slides.filter((item)=>{
-                    return item.postType ==='Latest Buzz'
-                })}/>
+                <Carousal postType='Latest Buzz' slides={slides.filter((item) => {
+                    return item.postType === 'Latest Buzz'
+                })} />
 
                 {/* <h1 className='bebasneue'>Reviews : </h1> */}
-                <Carousal postType='Reviews' slides={slides.filter((item)=>{
-                    return item.postType ==='Reviews'
-                })}/>
+                <Carousal postType='Reviews' slides={slides.filter((item) => {
+                    return item.postType === 'Reviews'
+                })} />
 
                 {/* <h1 className='bebasneue'>Suggestions : </h1> */}
-                <Carousal postType='Suggestions' slides={slides.filter((item)=>{
-                    return item.postType ==='Suggestions'
-                })}/>
+                <Carousal postType='Suggestions' slides={slides.filter((item) => {
+                    return item.postType === 'Suggestions'
+                })} />
 
                 {/* <h1 className='bebasneue'>Box Office Collections : </h1> */}
-                <Carousal postType='Box Office Collections' slides={slides.filter((item)=>{
-                    return item.postType ==='Box Office Collections'
-                })}/>
+                <Carousal postType='Box Office Collections' slides={slides.filter((item) => {
+                    return item.postType === 'Box Office Collections'
+                })} />
 
 
 

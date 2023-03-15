@@ -1,0 +1,17 @@
+.mCard {
+    background: linear-gradient(to bottom, transparent 65%, #000000 100%);
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+@media screen and (max-width: 480px) {
+    .mCard {
+        background: linear-gradient(to bottom, transparent 60%, #000000 100%);
+        padding-right: 50px;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}
