@@ -1,5 +1,5 @@
 import React from 'react'
-
+import './CardComponent.css'
 function CardComponent(props) {
     return (
         <div className="container d-flex flex-column justify-content-center">
@@ -10,15 +10,17 @@ function CardComponent(props) {
                     {new Date(props.postedTime).toString().slice(4, 21).split(/[ ,]+/).join('-')} - {props.writtenBy}
                 </small>
             </div>
-            <img src={props.imageURL} alt={props.title} className='img-fluid' />
             <div className='container d-flex flex-column justify-content-center align-items-center'>
+                <img src={props.imageURL} alt={props.title} className='img-fluid mBanner' />
+                <p className='cobertCondesnedItalic mt-2'>{props.imageTitle}</p>
 
-                <small className='cobertCondesnedItalic mt-2' style={{ fontSize: '10px' }}>{props.imageTitle}</small>
             </div>
-            <p className='openSans mt-3'>
-
-                {props.description}
-            </p>
+            <div className='description'>
+                {props.description.split('\\n').map((paragraph) => {
+                    console.log(paragraph)
+                    return <p className='openSans mt-3'>{paragraph}</p>
+                })}
+            </div>
         </div>
     )
 }

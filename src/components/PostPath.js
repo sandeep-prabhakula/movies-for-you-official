@@ -1,5 +1,5 @@
 import React from 'react'
-
+import './PostPath.css'
 function PostPath(props) {
   return (
     <nav style={{
@@ -8,17 +8,17 @@ function PostPath(props) {
     }} aria-label="breadcrumb" className='ms-2'>
         <ol className="breadcrumb">
             <li className=" me-1">
-                <small className='cobertCondesnedItalic' style={{ fontSize: '10px' }}>
+                <small className='cobertCondesnedItalic'>
                     Movies4U-Official &lt;
                 </small>
             </li>
             <li className="me-1">
-                <small className='cobertCondesnedItalic' style={{ fontSize: '10px' }}>
+                <small className='cobertCondesnedItalic'>
                     {props.postType} &lt;
                 </small>
             </li>
             <li className=" active" aria-current="page">
-                <small className='cobertCondesnedItalic' style={{ fontSize: '10px' }}>
+                <small className='cobertCondesnedItalic'>
                     {(navigator.userAgent.indexOf('Android') !== -1) && props.title.length > 15 ? props.title.substring(0, 35) + "..." : " " + props.title}
                 </small>
             </li>
