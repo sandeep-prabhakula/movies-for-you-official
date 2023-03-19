@@ -1,0 +1,9 @@
+.mBanner {
+    width: 50%;
+}
+
+@media screen and (max-width: 480px) {
+    .mBanner {
+        width: 100%
+    }
+}

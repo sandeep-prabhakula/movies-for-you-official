@@ -69,7 +69,7 @@ function DetailedPost(props) {
                  let data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
                      return doc.postedTime !== Number(props.postID)
                  })
-                 setRecentPosts(data.slice(0,3))
+                 setRecentPosts(data.slice(0,5))
              })
          }
      }
@@ -172,7 +172,7 @@ function DetailedPost(props) {
             })
             setTitle(allPosts[0].title)
             setDescription(allPosts[0].description)
-            setImageTitle(allPosts[0].imageTitle)
+            // setImageTitle(allPosts[0].imageTitle)
             setPostType(allPosts[0].postType)
             setPostedTime(allPosts[0].postedTime)
             setWrittenBy(allPosts[0].writtenBy)
@@ -192,7 +192,7 @@ function DetailedPost(props) {
 
             <PostPath title={title} postType={postType} />
 
-            <CardComponent postID={postID} title={title} postedTime={postedTime} imageURL={imageURL} imageTitle={imageTitle} description={description} writtenBy={writtenBy} />
+            <CardComponent postID={postID} title={title} postedTime={postedTime} imageURL={imageURL} description={description} writtenBy={writtenBy} />
 
             {/* Rate the Movie */}
 

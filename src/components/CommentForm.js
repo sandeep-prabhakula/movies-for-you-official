@@ -19,11 +19,11 @@ function CommentForm(props) {
         const currentDate = new Date();
         const timestamp = currentDate.getTime();
         let ref = doc(commentsDB, `${props.postID}`)
-        if (comment !== '' && commentorName !== '' && user !== null) {
+        if (comment !== '' && commentorName !== '') {
             await updateDoc(ref, {
                 commentsList: arrayUnion({
                     'timestamp': timestamp,
-                    'name': user.email,
+                    'name': user !== null?user.email:commentorName,
                     'comment': comment
                 })
             })

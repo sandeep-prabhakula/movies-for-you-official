@@ -2,13 +2,16 @@ import React from 'react'
 import { firestore } from '../firebase'
 import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestore'
 import { useEffect, useState } from 'react';
-import ReviewItem from './ReviewItem';
 import SocialProfiles from './SocialProfiles';
 import Navbar from './NavBar';
 import Carousal from './Carousal';
-import { virtualCards } from '../dummyDataAPI'
+import ReviewCarousel from './ReviewCarousel';
+import SuggestionCarousel from './SuggestionCarousel';
 function MainPage() {
     const [slides, setSlides] = useState([])
+    const [reviews,setReviews] = useState([])
+    const [suggestions,setSuggestions] = useState([])
+
     const getTopPosts = async () => {
 
         let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
@@ -21,11 +24,38 @@ function MainPage() {
                  setSlides(data)
              })
         }
-
-
     }
+
+    const getReviews = async ()=>{
+        let allReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
+        if(allReviews!==null && allReviews.length!==0){
+            setReviews(allReviews)
+        }else{
+            const docRef = collection(firestore,'Reviews')
+            onSnapshot(docRef,(snapshot)=>{
+                let data = snapshot.docs.map(doc=>doc.data()).reverse()
+                setReviews(data)
+            })
+        }
+    }
+
+    const getSuggestions = async ()=>{
+        let allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
+        if(allSuggestions!==null && allSuggestions.length!==0){
+            setSuggestions(allSuggestions)
+        }else{
+            const docRef = collection(firestore,"Suggestions")
+            onSnapshot(docRef,(snapshot)=>{
+                let data = snapshot.docs.map(doc=>doc.data()).reverse()
+                setSuggestions(data)
+            })
+        }
+    }
+
     useEffect(() => {
         getTopPosts()
+        getReviews()
+        getSuggestions()
     }, [])
 
     return (
@@ -46,13 +76,9 @@ function MainPage() {
                     return item.postType === 'Latest Buzz'
                 })} />
 
-                <Carousal postType='Reviews' slides={slides.filter((item) => {
-                    return item.postType === 'Reviews'
-                })} />
+                <ReviewCarousel reviews={reviews}/>
 
-                <Carousal postType='Suggestions' slides={slides.filter((item) => {
-                    return item.postType === 'Suggestions'
-                })} />
+                <SuggestionCarousel suggestions={suggestions} />
 
                 <Carousal postType='Box Office Collections' slides={slides.filter((item) => {
                     return item.postType === 'Box Office Collections'

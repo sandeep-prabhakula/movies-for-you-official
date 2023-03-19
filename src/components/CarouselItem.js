@@ -13,7 +13,7 @@ function CarouselItem(props) {
         }}>
             <img src={props.imageURL} className="card-img img-fluid " alt={props.title} />
             <div className="card-img-overlay d-flex flex-column justify-content-end mCard">
-                <small className="nexa">{props.title.length>50?props.title.slice(0,50)+'...':props.title}</small>
+                <small className="nexa">{props.title.length>70?props.title.slice(0,70)+'...':props.title}</small>
             </div>
         </div>
     )
