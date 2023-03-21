@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore'
 import { useUserAuth } from "../context/UserAuthContext";
@@ -80,6 +80,29 @@ function DetailedSuggestion() {
             })
         }
     }
+
+
+    const getAllPosts = async () => {
+        const collectionRef = collection(firestore, "Posts")
+        onSnapshot(collectionRef, (snapshot) => {
+            window.sessionStorage.setItem('allPosts', JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
+
+    const getSuggestions = async () => {
+        const suggestionRef = collection(firestore, "Suggestions")
+        onSnapshot(suggestionRef, (snapshot) => {
+            window.sessionStorage.setItem("suggestions", JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
+
+    const getReviews = async () => {
+        const reviewRef = collection(firestore, "Reviews")
+        onSnapshot(reviewRef, (snapshot) => {
+            window.sessionStorage.setItem("reviews", JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
+
 
     const colors = {
         orange: "#FFBA5A",
@@ -180,36 +203,55 @@ function DetailedSuggestion() {
             setWhereToWatch(allSuggestions[0].whereToWatch)
             setWrittenBy(allSuggestions[0].writtenBy)
             setYearOfRelease(allSuggestions[0].yearOfRelease)
-        }else{
+        } else {
             getCurrentSuggestion()
         }
-        getRecentPosts()
+        setTimeout(() => {
+            getRecentPosts()
+        }, 2000)
+
+        setTimeout(() => {
+            const cachedPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
+            if (cachedPosts === null) {
+                getAllPosts()
+            }
+        }, 10000)
+
+        setTimeout(() => {
+            const cachedReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
+            if (cachedReviews === null) getReviews()
+        }, 10000)
+
+        setTimeout(() => {
+            const cachedSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
+            if (cachedSuggestions === null) getSuggestions()
+        }, 10000)
     }, [])
     return (
         <>
             <Navbar />
             <PostPath title={title} postType="Suggestions" />
-            <SuggestionCardComponent 
-            censorRating={censorRating}
-            description={description}
-            directedBy={directedBy}
-            genre={genre}
-            imageURL={imageURL}
-            language={language}
-            postedTime={postedTime}
-            runTime={runTime}
-            title={title}
-            whereToWatch={whereToWatch}
-            writtenBy={writtenBy}
-            yearOfRelease={yearOfRelease}
+            <SuggestionCardComponent
+                censorRating={censorRating}
+                description={description}
+                directedBy={directedBy}
+                genre={genre}
+                imageURL={imageURL}
+                language={language}
+                postedTime={postedTime}
+                runTime={runTime}
+                title={title}
+                whereToWatch={whereToWatch}
+                writtenBy={writtenBy}
+                yearOfRelease={yearOfRelease}
             />
-            <RateMovie postID={suggestionID} postType="Suggestions" submitRating={submitRating} currentValue={currentValue} handleClick={handleClick} handleMouseLeave={handleMouseLeave} handleMouseOver={handleMouseOver}  hoverValue={hoverValue}/>
+            <RateMovie postID={suggestionID} postType="Suggestions" submitRating={submitRating} currentValue={currentValue} handleClick={handleClick} handleMouseLeave={handleMouseLeave} handleMouseOver={handleMouseOver} hoverValue={hoverValue} />
 
             <UserRatingLayout postID={suggestionID} postType="Suggestions" uniqueEmail={uniqueEmail} getRatings={getRatings} ratedStars={ratedStars} leftStars={leftStars} />
 
-            <PostYouMightLike recentPosts={recentPosts}/>
+            <PostYouMightLike recentPosts={recentPosts} />
             {/* <UserComments postID={reviewID}/> */}
-            <CommentForm postID={suggestionID}/>
+            <CommentForm postID={suggestionID} />
             <SocialProfiles />
         </>
     )

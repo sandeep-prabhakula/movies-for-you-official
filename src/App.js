@@ -23,6 +23,7 @@ import SuggestionsGenre from "./components/SuggestionsGenre";
 import Suggestions from "./components/Suggestions";
 import DetailedReview from "./components/DetailedReview";
 import DetailedSuggestion from "./components/DetailedSuggestion";
+import Reviews from "./components/Reviews";
 function App() {
   const collectionRef = collection(firestore, 'Posts')
   const suggestionRef = collection(firestore, 'Suggestions')
@@ -64,9 +65,9 @@ function App() {
   useEffect(() => {
 
     runOneSignal()
-    getAllPosts()
-    getSuggestions()
-    getReviews()
+    // getAllPosts()
+    // getSuggestions()
+    // getReviews()
 
   }, [])
 
@@ -77,7 +78,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<MainPage />} />
             <Route exact path="/exclusive-updates" element={<Home postType="Exclusive Updates" />} />
-            <Route exact path="/reviews" element={<Home postType="Reviews" />} />
+            <Route exact path="/reviews" element={<Reviews/>} />
             <Route exact path='/latest-buzz' element={<Home postType='Latest Buzz' />} />
             <Route exact path="/suggestions" element={<SuggestionsGenre />} />
             <Route exact path="/box-office-collections" element={<Home postType="Box Office Collections" />} />

@@ -1,25 +1,29 @@
-import { onSnapshot, collection, where,query } from 'firebase/firestore'
+import { onSnapshot, collection, where, query } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { firestore } from '../firebase'
 import Navbar from './NavBar'
+import SocialProfiles from './SocialProfiles'
+import SuggestionItem from './SuggestionItem'
 
 function Suggestions(props) {
     const { genre } = useParams()
-    const collectionRef = collection(firestore,'Suggestions')
+    const collectionRef = collection(firestore, 'Suggestions')
     const [genreSuggestions, setGenreSuggestions] = useState([])
-    const cacheSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
+    const cacheSuggestions = JSON.parse(window.sessionStorage.getItem(genre))
     const getGenreSuggestions = async () => {
         if (cacheSuggestions !== null && cacheSuggestions.length !== 0) {
-            setGenreSuggestions(props.suggestions.filter((item) => {
-                return item.genre.toLowerCase().includes(genre)
-            }))
+            setGenreSuggestions(cacheSuggestions)
         } else {
-            onSnapshot(collectionRef,(snapshot)=>{
-                setGenreSuggestions(snapshot.docs.filter((item)=>{
+            onSnapshot(collectionRef, (snapshot) => {
+                setGenreSuggestions(snapshot.docs.map(doc=>doc.data()).filter((item) => {
+                    
                     return item.genre.toLowerCase().includes(genre)
-                }))
-            })  
+                }).reverse())
+                window.sessionStorage.setItem(genre, JSON.stringify(snapshot.docs.map(doc=>doc.data()).filter((item) => {
+                    return item.genre.toLowerCase().includes(genre)
+                })))
+            })
         }
     }
     useEffect(() => {
@@ -28,16 +32,16 @@ function Suggestions(props) {
     return (
         <>
             <Navbar />
-            <div className="container">
+            <SocialProfiles />
+            <div className="container mt-2">
                 <div className="row">
-                    {genreSuggestions?genreSuggestions.map((suggestion)=>{
-                        console.log(genreSuggestions)
-                        return <div key={suggestion.postedTime}>
-                            <div className="container">
-                                <h3>{suggestion.title}</h3>
-                            </div>
+                    {genreSuggestions ? genreSuggestions.map((suggestion) => {
+                        return <div key={suggestion.postedTime} className="col-md-4">
+                            <SuggestionItem id={suggestion.postedTime}
+                                imageURL={suggestion.imageURL}
+                                title={suggestion.title} />
                         </div>
-                    }):console.log("...")}
+                    }) : console.log("...")}
                 </div>
             </div>
         </>

@@ -7,7 +7,7 @@ import PostPath from './PostPath'
 import ReviewCardComponent from './ReviewCardComponent';
 import SocialProfiles from './SocialProfiles';
 import UserRatingLayout from './UserRatingLayout';
-import { doc, getDoc, collection, onSnapshot,updateDoc,arrayUnion } from 'firebase/firestore'
+import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore'
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from 'react-router-dom';
 import PostYouMightLike from './PostYouMightLike';
@@ -55,118 +55,140 @@ function DetailedReview() {
         setWrittenBy(currentPost.writtenBy)
     }
 
-         // get recent posts
-         const [recentPosts, setRecentPosts] = useState([])
+    // get recent posts
+    const [recentPosts, setRecentPosts] = useState([])
 
-         const getRecentPosts = () => {
-             // caching
-     
-             let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
-             if (allPosts !== null && allPosts.length !== 0) {
-                 let tempRecentPosts = []
-                 if (allPosts.length <= 5) {
-                     setRecentPosts(allPosts.filter((item) => {
-                         return item.postedTime !== Number(reviewID)
-                     }))
-                 }
-                 else {
-                     for (let i = 0; i <= 5; i++) {
-                         if (Number(reviewID) !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
-                     }
-     
-                     setRecentPosts(tempRecentPosts)
-                 }
-             } else {
-                 const docRef = collection(firestore, 'Posts')
-                 onSnapshot(docRef, (snapshot) => {
-                     let data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
-                         return doc.postedTime !== Number(reviewID)
-                     })
-                     setRecentPosts(data.slice(0,5))
-                 })
-             }
-         }
-    
-    
-    
-         const colors = {
-            orange: "#FFBA5A",
-            grey: "#a9a9a9"
-    
-        };
-    
-        const { user } = useUserAuth()
-    
-        const navigate = useNavigate();
-    
-        const commentsDB = collection(firestore, 'Comments')
-    
-        const [currentValue, setCurrentValue] = useState(0);
-        const [hoverValue, setHoverValue] = useState(undefined);
-        const stars = Array(5).fill(0)
-    
-        const handleClick = value => {
-            setCurrentValue(value)
+    const getRecentPosts = () => {
+        // caching
+
+        let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
+        if (allPosts !== null && allPosts.length !== 0) {
+            let tempRecentPosts = []
+            if (allPosts.length <= 5) {
+                setRecentPosts(allPosts.filter((item) => {
+                    return item.postedTime !== Number(reviewID)
+                }))
+            }
+            else {
+                for (let i = 0; i <= 5; i++) {
+                    if (Number(reviewID) !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
+                }
+
+                setRecentPosts(tempRecentPosts)
+            }
+        } else {
+            const docRef = collection(firestore, 'Posts')
+            onSnapshot(docRef, (snapshot) => {
+                let data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
+                    return doc.postedTime !== Number(reviewID)
+                })
+                setRecentPosts(data.slice(0, 5))
+            })
         }
-    
-        const handleMouseOver = newHoverValue => {
-            setHoverValue(newHoverValue)
-        };
-    
-        const handleMouseLeave = () => {
-            setHoverValue(undefined)
-        }
-    
-        const submitRating = async () => {
-            let ref = doc(commentsDB, `${reviewID}`)
-            let currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
-            if (user !== null) {
-                if (currentValue !== 0) {
-                    await updateDoc(ref, {
-                        ratingsList: arrayUnion({
-                            'email': user.email,
-                            'rating': currentValue
-                        })
+    }
+
+
+
+    const colors = {
+        orange: "#FFBA5A",
+        grey: "#a9a9a9"
+
+    };
+
+    const { user } = useUserAuth()
+
+    const navigate = useNavigate();
+
+    const commentsDB = collection(firestore, 'Comments')
+
+    const [currentValue, setCurrentValue] = useState(0);
+    const [hoverValue, setHoverValue] = useState(undefined);
+    const stars = Array(5).fill(0)
+
+    const handleClick = value => {
+        setCurrentValue(value)
+    }
+
+    const handleMouseOver = newHoverValue => {
+        setHoverValue(newHoverValue)
+    };
+
+    const handleMouseLeave = () => {
+        setHoverValue(undefined)
+    }
+
+    const submitRating = async () => {
+        let ref = doc(commentsDB, `${reviewID}`)
+        let currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
+        if (user !== null) {
+            if (currentValue !== 0) {
+                await updateDoc(ref, {
+                    ratingsList: arrayUnion({
+                        'email': user.email,
+                        'rating': currentValue
                     })
-                    setCurrentValue(0)
-                    getRatings()
-                }
-                else{
-                    console.log('null rating not accepted')
-                }
-            } else {
-                navigate('/login')
+                })
+                setCurrentValue(0)
+                getRatings()
+            }
+            else {
+                console.log('null rating not accepted')
+            }
+        } else {
+            navigate('/login')
+        }
+    }
+
+
+
+    const [ratingsList, setRatingList] = useState([])
+    const [ratedStars, setRatedStars] = useState([])
+    const [leftStars, setLeftStars] = useState([])
+    const [cumilativeRating, setCumilativeRating] = useState(0)
+    const [uniqueEmail, setUniqueEmails] = useState(0)
+
+    //get Ratings
+    const getRatings = async () => {
+        const uniqueUsers = new Set()
+        const ref = doc(firestore, 'Comments', `${reviewID}`)
+        const docSnap = await getDoc(ref)
+        const data = docSnap.data()
+        const rates = data.ratingsList
+        setRatingList(rates)
+        let sum = 0;
+        for (let i = 0; i < rates.length; i++) {
+            if (!uniqueUsers.has(rates[i].email)) {
+                sum += rates[i].rating;
+                uniqueUsers.add(rates[i].email)
             }
         }
-    
-    
-    
-        const [ratingsList, setRatingList] = useState([])
-        const [ratedStars, setRatedStars] = useState([])
-        const [leftStars, setLeftStars] = useState([])
-        const [cumilativeRating, setCumilativeRating] = useState(0)
-        const [uniqueEmail,setUniqueEmails] = useState(0)
-    
-        //get Ratings
-        const getRatings = async () => {
-            const uniqueUsers = new Set()
-            const ref = doc(firestore, 'Comments', `${reviewID}`)
-            const docSnap = await getDoc(ref)
-            const data = docSnap.data()
-            const rates = data.ratingsList
-            setRatingList(rates)
-            let sum = 0;
-            for (let i = 0; i < rates.length; i++) {
-                if(!uniqueUsers.has(rates[i].email)){
-                    sum += rates[i].rating;
-                    uniqueUsers.add(rates[i].email)
-                }
-            }
-            setCumilativeRating(Math.floor(sum / uniqueUsers.size))
-            setUniqueEmails(uniqueUsers.size)
-            setRatedStars(Array(Math.floor(sum / uniqueUsers.size)).fill(1))
-            setLeftStars(Array(5 - Math.floor(sum / uniqueUsers.size)).fill(0))
-        }
+        setCumilativeRating(Math.floor(sum / uniqueUsers.size))
+        setUniqueEmails(uniqueUsers.size)
+        setRatedStars(Array(Math.floor(sum / uniqueUsers.size)).fill(1))
+        setLeftStars(Array(5 - Math.floor(sum / uniqueUsers.size)).fill(0))
+    }
+
+
+    const getAllPosts = async () => {
+        const collectionRef = collection(firestore, "Posts")
+        onSnapshot(collectionRef, (snapshot) => {
+            window.sessionStorage.setItem('allPosts', JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
+
+    const getSuggestions = async () => {
+        const suggestionRef = collection(firestore, "Suggestions")
+        onSnapshot(suggestionRef, (snapshot) => {
+            window.sessionStorage.setItem("suggestions", JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
+
+    const getReviews = async () => {
+        const reviewRef = collection(firestore, "Reviews")
+        onSnapshot(reviewRef, (snapshot) => {
+            window.sessionStorage.setItem("reviews", JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -194,7 +216,27 @@ function DetailedReview() {
         } {
             getCurrentReview()
         }
-        getRecentPosts()
+
+        setTimeout(() => {
+            getRecentPosts()
+        }, 2000)
+
+        setTimeout(() => {
+            const cachedPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
+            if (cachedPosts === null) {
+                getAllPosts()
+            }
+        }, 10000)
+
+        setTimeout(() => {
+            const cachedReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
+            if (cachedReviews === null) getReviews()
+        }, 10000)
+
+        setTimeout(() => {
+            const cachedSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
+            if (cachedSuggestions === null) getSuggestions()
+        }, 10000)
     }, [])
 
 
@@ -221,12 +263,12 @@ function DetailedReview() {
                 writtenBy={writtenBy}
 
             />
-            <RateMovie postID={reviewID} postType="Reviews" submitRating={submitRating} currentValue={currentValue} handleClick={handleClick} handleMouseLeave={handleMouseLeave} handleMouseOver={handleMouseOver}  hoverValue={hoverValue}/>
+            <RateMovie postID={reviewID} postType="Reviews" submitRating={submitRating} currentValue={currentValue} handleClick={handleClick} handleMouseLeave={handleMouseLeave} handleMouseOver={handleMouseOver} hoverValue={hoverValue} />
 
             <UserRatingLayout postID={reviewID} postType="Reviews" uniqueEmail={uniqueEmail} getRatings={getRatings} ratedStars={ratedStars} leftStars={leftStars} />
-            <PostYouMightLike recentPosts={recentPosts}/>
+            <PostYouMightLike recentPosts={recentPosts} />
             {/* <UserComments postID={reviewID}/> */}
-            <CommentForm postID={reviewID}/>
+            <CommentForm postID={reviewID} />
             <SocialProfiles />
         </>
     )

@@ -15,18 +15,23 @@ const Home = (props) => {
     // Fetching the posts from server
 
     // Compound Queries
+    const cachedPosts = JSON.parse(window.sessionStorage.getItem(props.postType))
+    if (cachedPosts !== null && cachedPosts.length !== 0) {
+      setReviews(cachedPosts)
+    } else {
+      const q = query(collectionRef, where('postType', "==", props.postType))
+      onSnapshot(q, (snapshot) => {
+        setReviews(snapshot.docs.map(doc => doc.data()).reverse())
+        window.sessionStorage.setItem(props.postType, JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+      })
+    }
 
-    // const q = query(collectionRef, where('postType', "==", props.postType))
-    // const unsubscribe = onSnapshot(q, (snapshot) => {
-    //   setReviews(snapshot.docs.map(doc => doc.data()).reverse())
-    // })
-    // return unsubscribe
 
-    
-    const posts = JSON.parse(window.sessionStorage.getItem('allPosts'))
-    setReviews(posts.filter((item)=>{
-      return item.postType === props.postType
-    }))
+
+    // const posts = JSON.parse(window.sessionStorage.getItem('allPosts'))
+    // setReviews(posts.filter((item) => {
+    //   return item.postType === props.postType
+    // }))
   }
 
 

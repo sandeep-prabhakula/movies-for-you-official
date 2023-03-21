@@ -23,13 +23,12 @@ function SuggestionsGenre() {
         }
     }
     useEffect(() => {
-        getSuggestions()
+        // getSuggestions()
     }, [])
     return (
         <>
             <Navbar />
-            <SocialProfiles/>
-            <div className='container mt-3'>
+            <div className='container mt-3 mb-3'>
                 <h1 className='bebasneue'>Genres : </h1>
                 <div className="row">
                     {genres.map((genre) => {

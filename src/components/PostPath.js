@@ -10,20 +10,20 @@ function PostPath(props) {
             <ol className="breadcrumb">
                 <li className=" me-1">
                     <Link to='/' className='text-decoration-none'>
-                        <small className='cobertCondesnedItalic' >
-                            Movies4U-Official &lt;
+                        <small className='arialCeb' >
+                            Movies4U-Official &gt;
                         </small>
                     </Link>
                 </li>
                 <li className="me-1">
                     <Link to={`/${props.postType.toLowerCase().replaceAll(' ','-')}`} className='text-decoration-none'>
-                        <small className='cobertCondesnedItalic'>
-                            {props.postType} &lt;
+                        <small className='arialCeb'>
+                            {props.postType} &gt;
                         </small>
                     </Link>
                 </li>
                 <li className=" active" aria-current="page">
-                    <small className='cobertCondesnedItalic'>
+                    <small className='arialCeb'>
                         {(navigator.userAgent.indexOf('Android') !== -1) && props.title.length > 15 ? props.title.substring(0, 35) + "..." : " " + props.title}
                     </small>
                 </li>

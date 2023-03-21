@@ -9,7 +9,7 @@ function UserRatingLayout(props) {
     };
 
     return (
-        <div className="container mt-2 " style={{ display: `${props.postType !== 'Reviews' ? 'none' : ''}` }}>
+        <div className="container mt-2 ">
                 <h2 className='bebasneue'>Final User Rating:</h2>
 
                 <div className="container d-flex flex-row">
@@ -40,7 +40,7 @@ function UserRatingLayout(props) {
                         )
                     }) : console.log("full rating")}
 
-                    <h5 className=''>({props.ratedStars.length}/5) {props.uniqueEmail} {props.uniqueEmail<=1?"Rating":'Ratings'}</h5>
+                    <h5 className=''>({props.ratedStars.length}/5) {props.uniqueEmail} {props.uniqueEmail===1?"Rating":'Ratings'}</h5>
                 </div>
             </div>
 

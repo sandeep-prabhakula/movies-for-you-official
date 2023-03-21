@@ -62,3 +62,24 @@ body{
 .nexa{
   font-family: nexa;
 }
+@font-face {
+  font-family: cedora;
+  src: url('../public/fonts/Cedora-BoldStd.otf');
+}
+.cedora{
+  font-family: cedora;
+}
+@font-face {
+  font-family: millard;
+  src: url('../public/fonts/Fontspring-DEMO-millard-400-regular.otf');
+}
+.millard{
+  font-family: millard;
+}
+@font-face {
+  font-family: arialCeb;
+  src: url('../public/fonts/arialceb.ttf');
+}
+.arialCeb{
+  font-family: arialCeb;
+}

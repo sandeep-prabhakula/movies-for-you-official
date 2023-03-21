@@ -12,7 +12,7 @@ function RateMovie(props) {
     const stars = Array(5).fill(0)
 
     return (
-        <div className="container" style={{ display: `${props.postType !== 'Reviews' ? 'none' : ''}` }}>
+        <div className="container mt-3">
             <h2 className='bebasneue me-2'>Rate Your Movie Experience:</h2>
             <div className="container">
 

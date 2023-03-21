@@ -161,27 +161,9 @@ function DetailedPost(props) {
     useEffect(() => {
         //unmounts every time postID changes
         window.scrollTo(0, 0)
-
-        // get Data from session storage
-        let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
-
-        //cache
-        if (allPosts !== null && allPosts.length !== 0) {
-            allPosts = allPosts.filter((item) => {
-                return item.postedTime === Number(postID)
-            })
-            setTitle(allPosts[0].title)
-            setDescription(allPosts[0].description)
-            // setImageTitle(allPosts[0].imageTitle)
-            setPostType(allPosts[0].postType)
-            setPostedTime(allPosts[0].postedTime)
-            setWrittenBy(allPosts[0].writtenBy)
-            setImageURL(allPosts[0].imageURL)
-        } else {
-            getCurrentPost()
-        }
+        getCurrentPost()
         getRecentPosts()
-        getRatings()
+        // getRatings()
     }, [postID])
 
    
@@ -193,14 +175,6 @@ function DetailedPost(props) {
             <PostPath title={title} postType={postType} />
 
             <CardComponent postID={postID} title={title} postedTime={postedTime} imageURL={imageURL} description={description} writtenBy={writtenBy} />
-
-            {/* Rate the Movie */}
-
-            <RateMovie postID={postID} postType={postType} submitRating={submitRating} currentValue={currentValue} handleClick={handleClick} handleMouseLeave={handleMouseLeave} handleMouseOver={handleMouseOver}  hoverValue={hoverValue}/>
-
-            {/* get All Ratings */}
-
-            <UserRatingLayout postID={postID} postType={postType} uniqueEmail={uniqueEmail} getRatings={getRatings} ratedStars={ratedStars} leftStars={leftStars}  />
 
             {/* Post You Might Like */}
 
