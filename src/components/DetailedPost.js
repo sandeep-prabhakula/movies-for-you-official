@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { firestore } from '../firebase'
-import { doc, getDoc, collection, onSnapshot,updateDoc,arrayUnion } from 'firebase/firestore'
+import { doc, getDoc, collection, onSnapshot,updateDoc,arrayUnion, query, orderBy, limit } from 'firebase/firestore'
 import SocialProfiles from './SocialProfiles';
 import Navbar from './NavBar';
 import UserRatingLayout from './UserRatingLayout';
@@ -48,7 +48,7 @@ function DetailedPost(props) {
      const getRecentPosts = () => {
          // caching
  
-         let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
+         let allPosts = JSON.parse(window.sessionStorage.getItem('recentPosts'));
          if (allPosts !== null && allPosts.length !== 0) {
              let tempRecentPosts = []
              if (allPosts.length <= 5) {
@@ -65,11 +65,13 @@ function DetailedPost(props) {
              }
          } else {
              const docRef = collection(firestore, 'Posts')
-             onSnapshot(docRef, (snapshot) => {
-                 let data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
-                     return doc.postedTime !== Number(props.postID)
+             const q = query(docRef,orderBy('postedTime','desc'),limit(6))
+             onSnapshot(q, (snapshot) => {
+                 let data = snapshot.docs.map(doc => doc.data()).filter((item)=>{
+                    return item.postedTime!==Number(postID)
                  })
-                 setRecentPosts(data.slice(0,5))
+                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
+                 setRecentPosts(data)
              })
          }
      }
@@ -156,13 +158,41 @@ function DetailedPost(props) {
     }
 
 
+    const getAllPosts = async () => {
+        const collectionRef = collection(firestore, "Posts")
+        onSnapshot(collectionRef, (snapshot) => {
+            window.sessionStorage.setItem('allPosts', JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
+
+    const getSuggestions = async () => {
+        const suggestionRef = collection(firestore, "Suggestions")
+        onSnapshot(suggestionRef, (snapshot) => {
+            window.sessionStorage.setItem("suggestions", JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
+
+    const getReviews = async () => {
+        const reviewRef = collection(firestore, "Reviews")
+        onSnapshot(reviewRef, (snapshot) => {
+            window.sessionStorage.setItem("reviews", JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+        })
+    }
 
 
     useEffect(() => {
         //unmounts every time postID changes
         window.scrollTo(0, 0)
         getCurrentPost()
-        getRecentPosts()
+        setTimeout(()=>{
+            getRecentPosts()
+        },2000)
+        
+        setTimeout(()=>{
+            const cachedAllPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
+            if(cachedAllPosts===null)getAllPosts()
+        },10000)
+
         // getRatings()
     }, [postID])
 

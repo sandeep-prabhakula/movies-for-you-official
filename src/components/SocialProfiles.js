@@ -20,7 +20,7 @@ function SocialProfiles() {
                     <img src={youtube} alt="youtube" className='img-fluid mProfile' />
                     </a>
                     <a href="https://telegram.dog/+vXr3hWTAKJg3Mzg1" className="text-dark me-4 text-decoration-none">
-                        <img src={telegram} alt="" className='img-fluid mProfile' />
+                        <img src={telegram} alt="telegram" className='img-fluid mProfile' />
                     </a>
                 </div>
             </div>

@@ -7,7 +7,7 @@ import PostPath from './PostPath'
 import ReviewCardComponent from './ReviewCardComponent';
 import SocialProfiles from './SocialProfiles';
 import UserRatingLayout from './UserRatingLayout';
-import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion } from 'firebase/firestore'
+import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion, query, orderBy, limit } from 'firebase/firestore'
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from 'react-router-dom';
 import PostYouMightLike from './PostYouMightLike';
@@ -61,28 +61,30 @@ function DetailedReview() {
     const getRecentPosts = () => {
         // caching
 
-        let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
-        if (allPosts !== null && allPosts.length !== 0) {
+        let cachedRecentPosts = JSON.parse(window.sessionStorage.getItem('recentPosts'));
+        if (cachedRecentPosts !== null && cachedRecentPosts.length !== 0) {
             let tempRecentPosts = []
-            if (allPosts.length <= 5) {
-                setRecentPosts(allPosts.filter((item) => {
+            if (cachedRecentPosts.length <= 5) {
+                setRecentPosts(cachedRecentPosts.filter((item) => {
                     return item.postedTime !== Number(reviewID)
                 }))
             }
             else {
                 for (let i = 0; i <= 5; i++) {
-                    if (Number(reviewID) !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
+                    if (Number(reviewID) !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
                 }
 
                 setRecentPosts(tempRecentPosts)
             }
         } else {
             const docRef = collection(firestore, 'Posts')
-            onSnapshot(docRef, (snapshot) => {
+            const q = query(docRef,orderBy('postedTime','desc'),limit(6))
+            onSnapshot(q, (snapshot) => {
                 let data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
                     return doc.postedTime !== Number(reviewID)
                 })
-                setRecentPosts(data.slice(0, 5))
+                window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
+                setRecentPosts(data)
             })
         }
     }
@@ -221,22 +223,12 @@ function DetailedReview() {
             getRecentPosts()
         }, 2000)
 
-        setTimeout(() => {
-            const cachedPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
-            if (cachedPosts === null) {
-                getAllPosts()
-            }
-        }, 10000)
 
         setTimeout(() => {
             const cachedReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
             if (cachedReviews === null) getReviews()
         }, 10000)
 
-        setTimeout(() => {
-            const cachedSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
-            if (cachedSuggestions === null) getSuggestions()
-        }, 10000)
     }, [])
 
 

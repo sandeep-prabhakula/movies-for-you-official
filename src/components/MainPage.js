@@ -21,6 +21,7 @@ function MainPage() {
             const docRef = collection(firestore, 'Posts')
              onSnapshot(docRef, (snapshot) => {
                  let data = snapshot.docs.map(doc => doc.data()).reverse()
+                 window.sessionStorage.setItem('allPosts',JSON.stringify(data))
                  setSlides(data)
              })
         }
@@ -34,6 +35,7 @@ function MainPage() {
             const docRef = collection(firestore,'Reviews')
             onSnapshot(docRef,(snapshot)=>{
                 let data = snapshot.docs.map(doc=>doc.data()).reverse()
+                window.sessionStorage.setItem('reviews',JSON.stringify(data))
                 setReviews(data)
             })
         }
@@ -47,6 +49,7 @@ function MainPage() {
             const docRef = collection(firestore,"Suggestions")
             onSnapshot(docRef,(snapshot)=>{
                 let data = snapshot.docs.map(doc=>doc.data()).reverse()
+                window.sessionStorage.setItem('suggestions',JSON.stringify(data))
                 setSuggestions(data)
             })
         }
