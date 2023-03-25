@@ -186,7 +186,7 @@ function DetailedPost(props) {
         getCurrentPost()
         setTimeout(()=>{
             getRecentPosts()
-        },2000)
+        },4000)
         
         setTimeout(()=>{
             const cachedAllPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))

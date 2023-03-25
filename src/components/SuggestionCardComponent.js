@@ -2,27 +2,32 @@ import React from 'react'
 
 function SuggestionCardComponent(props) {
     return (
-        <div className='container d-flex flex-column justify-content-center'>
-            <h1 className='bebasneue'>{props.title}</h1>
+        <div className='d-flex flex-column justify-content-center'>
             <div className='container d-flex flex-column justify-content-between'>
-                <small className='arialCeb'>
-                    {props.writtenBy} | {new Date(props.postedTime).toString().slice(4, 21).split(/[ ,]+/).join('-')} IST
+            <h1 className=''>
+                <strong>
+                    {props.title}
+                </strong>
+            </h1>
+                <small className=''>
+                    {props.writtenBy} | {new Date(props.postedTime).toString().slice(4, 21).split(/[ ,]+/).join(' ')} IST
                 </small>
             </div>
+            <hr />
             <div className='container d-flex flex-column justify-content-center align-items-center'>
                 <img src={props.imageURL} alt={props.title} className='img-fluid mBanner' />
             </div>
 
-            <div className="description mt-3">
+            <div className="container description mt-3">
                 <h2 className='bebasneue'>Description : </h2>
                 {props.description.split('\\n').map((paragraph) => {
                     return <p className='openSans mt-3'>{paragraph}</p>
                 })}
             </div>
 
-            <div className=" movieDetails d-flex flex-column ms-2 mt-2 mb-3">
+            <div className="container movieDetails d-flex flex-column mt-2 mb-3">
                 <h2 className='bebasneue'>Movie Details : </h2>
-                <div className="container ms-3">
+                <div className="container">
 
                     <div className="directedBy">
                         <strong className='me-2'>

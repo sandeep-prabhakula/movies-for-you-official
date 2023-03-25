@@ -221,7 +221,7 @@ function DetailedReview() {
 
         setTimeout(() => {
             getRecentPosts()
-        }, 2000)
+        }, 4000)
 
 
         setTimeout(() => {

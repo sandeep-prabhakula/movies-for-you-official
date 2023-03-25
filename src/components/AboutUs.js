@@ -5,7 +5,7 @@ function AboutUs() {
         window.scrollTo(0,0)
     },[])
     return (
-        <div className="container mt-2">
+        <div className="container mt-3">
             <article>
                 <section>
                     <header>
@@ -15,8 +15,7 @@ function AboutUs() {
                             </strong>
                         </h2>
                     </header>
-                    <p>Welcome to Movies4U
-                        Welcome to Movies4u, your ultimate destination for everything related to movies! We are a team of dedicated movie enthusiasts who are passionate about bringing you the latest updates, reviews, and insights on all things related to the world of cinema.</p>
+                    <p>Welcome to Movies4U, your ultimate destination for everything related to movies! We are a team of dedicated movie enthusiasts who are passionate about bringing you the latest updates, reviews, and insights on all things related to the world of cinema.</p>
                     <p>
                         Movies4u Official is your one-stop-shop for all your movie-related needs. Whether you are looking for exclusive film updates, the latest box-office collections, or recommendations on what to watch next, we've got you covered.
                     </p>

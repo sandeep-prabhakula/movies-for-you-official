@@ -210,7 +210,7 @@ function DetailedSuggestion() {
         }
         setTimeout(() => {
             getRecentPosts()
-        }, 2000)
+        }, 4000)
 
         setTimeout(() => {
             const cachedSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
