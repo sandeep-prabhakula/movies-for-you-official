@@ -6,7 +6,7 @@ function ReviewCardComponent(props) {
             <div className='container d-flex flex-column justify-content-between'>
                 <h1 className=''>
                     <strong>
-                        {props.movieTitle} Review
+                        {props.movieTitle} 
                     </strong>
                 </h1>
                 <small className=''>
@@ -70,16 +70,7 @@ function ReviewCardComponent(props) {
                 })}
                 
             </div>
-            <div className="container actorPerformances">
-                <h4 className=''>
-                    <strong>
-                        Actors Performance :
-                    </strong>
-                </h4>
-                {props.actorPerformances.split('\\n').map((paragraph) => {
-                    return <p className='openSans mt-3'>{paragraph}</p>
-                })}
-            </div>
+            
             <div className="container storyLine">
                 <h4 className=''>
                     <strong>
@@ -87,6 +78,17 @@ function ReviewCardComponent(props) {
                     </strong>
                 </h4>
                 {props.storyLine.split('\\n').map((paragraph) => {
+                    return <p className='openSans mt-3'>{paragraph}</p>
+                })}
+            </div>
+
+            <div className="container actorPerformances">
+                <h4 className=''>
+                    <strong>
+                        Actors Performance :
+                    </strong>
+                </h4>
+                {props.actorPerformances.split('\\n').map((paragraph) => {
                     return <p className='openSans mt-3'>{paragraph}</p>
                 })}
             </div>

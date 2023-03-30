@@ -11,9 +11,9 @@ function ReviewCarouselItem(props) {
     <div className="card bg-dark text-white" onClick={viewDetailedPost} style={{
         cursor:'pointer'
     }}>
-        <img src={props.imageURL} className="card-img img-fluid " alt={props.movieTitle} />
+        <img src={props.imageURL} className="card-img img-fluid " alt={props.title} />
         <div className="card-img-overlay d-flex flex-column justify-content-end mCard">
-            <small className="nexa">{props.movieTitle.length>70?props.movieTitle.slice(0,70)+'...':props.movieTitle}</small>
+            <small className="nexa">{props.title.length>70?props.title.slice(0,70)+'...':props.title}</small>
         </div>
     </div>
   )

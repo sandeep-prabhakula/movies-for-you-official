@@ -191,7 +191,17 @@ function DetailedPost(props) {
         setTimeout(()=>{
             const cachedAllPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
             if(cachedAllPosts===null)getAllPosts()
-        },10000)
+        },6000)
+
+        setTimeout(() => {
+            const cachedReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
+            if (cachedReviews === null) getReviews()
+        }, 6000)
+
+        setTimeout(() => {
+            const cachedSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
+            if (cachedSuggestions === null) getSuggestions()
+        }, 6000)
 
         // getRatings()
     }, [postID])

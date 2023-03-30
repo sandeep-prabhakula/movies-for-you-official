@@ -6,7 +6,7 @@ import CarouselItem from './CarouselItem';
 
 function Carousal(props) {
 
-    const cards = props.slides.slice(0,5)
+    const cards = props.slides
     return (
         <div className="container mt-3 mb-1" style={{
             display:`${cards.length!==0?'block':'none'}`
@@ -35,7 +35,7 @@ function Carousal(props) {
                 {cards?cards.map((item, index) => (
 
                     <div key={item.postedTime} className='me-2 container' >
-                        <CarouselItem postedTime={item.postedTime} imageURL={item.imageURL} title={item.title} />
+                        <CarouselItem postedTime={item.postedTime} imageURL={item.imageURL} title={item.title} postType={item.postType?item.postType:"null"} censorRating={item.censorRating?item.censorRating:"null"} intro={item.intro?item.intro:"null"}/>
                     </div>
                 )):console.log('...')}
             </Carousel>

@@ -4,7 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import SuggestionCarouselItem from './SuggestionCarouselItem';
 
 function SuggestionCarousel(props) {
-    const suggestions = props.suggestions.slice(0, 5)
+    const suggestions = props.suggestions
     return (
         <>
             <div className="container mt-3 mb-1">

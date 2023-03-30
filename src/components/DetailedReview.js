@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import PostYouMightLike from './PostYouMightLike';
 import RateMovie from './RateMovie';
 import UserComments from './UserComments';
+
 function DetailedReview() {
     const { reviewID } = useParams();
     // getCurrentReview
@@ -43,7 +44,7 @@ function DetailedReview() {
         setGenre(currentPost.genre)
         setImageURL(currentPost.imageURL)
         setIntro(currentPost.intro)
-        setMovieTitle(currentPost.movieTitle)
+        setMovieTitle(currentPost.title)
         setNegatives(currentPost.negatives)
         setOriginLanguage(currentPost.originLanguage)
         setPositives(currentPost.positives)
@@ -63,6 +64,7 @@ function DetailedReview() {
 
         let cachedRecentPosts = JSON.parse(window.sessionStorage.getItem('recentPosts'));
         if (cachedRecentPosts !== null && cachedRecentPosts.length !== 0) {
+            // console.log(cachedRecentPosts)
             let tempRecentPosts = []
             if (cachedRecentPosts.length <= 5) {
                 setRecentPosts(cachedRecentPosts.filter((item) => {
@@ -70,7 +72,7 @@ function DetailedReview() {
                 }))
             }
             else {
-                for (let i = 0; i <= 5; i++) {
+                for (let i = 0; i < cachedRecentPosts.length; i++) {
                     if (Number(reviewID) !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
                 }
 
@@ -78,14 +80,37 @@ function DetailedReview() {
             }
         } else {
             const docRef = collection(firestore, 'Posts')
-            const q = query(docRef,orderBy('postedTime','desc'),limit(6))
+            const reviewRef = collection(firestore, 'Reviews')
+            const suggestionRef = collection(firestore, 'Suggestions')
+            let data = []
+            const q = query(docRef, orderBy('postedTime', 'desc'), limit(5))
             onSnapshot(q, (snapshot) => {
-                let data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
+                data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
                     return doc.postedTime !== Number(reviewID)
                 })
-                window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
-                setRecentPosts(data)
+                window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
             })
+            const reviewQ = query(reviewRef, orderBy('postedTime', 'desc'), limit(2))
+            onSnapshot(reviewQ, (snapshot) => {
+                data = data.concat(snapshot.docs.map(doc => doc.data()).filter((item) => {
+                    return doc.postedTime !== Number(reviewID)
+                }))
+                window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
+            })
+            const suggestionQ = query(suggestionRef, orderBy('postedTime', 'desc'), limit(2))
+            onSnapshot(suggestionQ, (snapshot) => {
+                data = data.concat(snapshot.docs.map(doc => doc.data()).filter((item) => {
+                    return item.postedTime !== Number(reviewID)
+                }))
+                window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
+            })
+            data = data.sort((a, b) => {
+                return a.postedTime - b.postedTime
+            })
+            window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
+            data = JSON.parse(window.sessionStorage.getItem('recentPosts'))
+            setRecentPosts(data)
+            // console.log(recentPosts)
         }
     }
 
@@ -194,6 +219,8 @@ function DetailedReview() {
 
     useEffect(() => {
         window.scrollTo(0, 0)
+        setRatedStars([])
+        setLeftStars([])
         let allReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
         if (allReviews !== null && allReviews !== 0) {
             allReviews = allReviews.filter((item) => {
@@ -205,7 +232,7 @@ function DetailedReview() {
             setGenre(allReviews[0].genre)
             setImageURL(allReviews[0].imageURL)
             setIntro(allReviews[0].intro)
-            setMovieTitle(allReviews[0].movieTitle)
+            setMovieTitle(allReviews[0].title)
             setNegatives(allReviews[0].negatives)
             setOriginLanguage(allReviews[0].originLanguage)
             setPositives(allReviews[0].positives)
@@ -215,21 +242,34 @@ function DetailedReview() {
             setStarring(allReviews[0].starring)
             setStoryLine(allReviews[0].storyLine)
             setWrittenBy(allReviews[0].writtenBy)
+            getRatings()
+            getRecentPosts()
         } {
             getCurrentReview()
+            getRatings()
+            setTimeout(() => {
+                getRecentPosts()
+            }, 4000)
         }
 
-        setTimeout(() => {
-            getRecentPosts()
-        }, 4000)
 
+
+
+        setTimeout(() => {
+            const cachedAllPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
+            if (cachedAllPosts === null) getAllPosts()
+        }, 6000)
 
         setTimeout(() => {
             const cachedReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
             if (cachedReviews === null) getReviews()
-        }, 10000)
+        }, 6000)
 
-    }, [])
+        setTimeout(() => {
+            const cachedSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
+            if (cachedSuggestions === null) getSuggestions()
+        }, 6000)
+    }, [reviewID])
 
 
     return (
@@ -258,7 +298,7 @@ function DetailedReview() {
             <RateMovie postID={reviewID} postType="Reviews" submitRating={submitRating} currentValue={currentValue} handleClick={handleClick} handleMouseLeave={handleMouseLeave} handleMouseOver={handleMouseOver} hoverValue={hoverValue} />
 
             <UserRatingLayout postID={reviewID} postType="Reviews" uniqueEmail={uniqueEmail} getRatings={getRatings} ratedStars={ratedStars} leftStars={leftStars} />
-            <PostYouMightLike recentPosts={recentPosts} />
+            <PostYouMightLike recentPosts={recentPosts} postID={reviewID} />
             {/* <UserComments postID={reviewID}/> */}
             <CommentForm postID={reviewID} />
             <SocialProfiles />

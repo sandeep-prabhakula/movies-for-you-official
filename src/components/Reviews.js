@@ -32,7 +32,7 @@ function Reviews() {
                     return <div className='col-md-4' key={element.postedTime}>
                         <ReviewCardItem id={element.postedTime}
                             imageURL={element.imageURL}
-                            title={element.movieTitle}
+                            title={element.title}
                         />
                     </div>
                 })}

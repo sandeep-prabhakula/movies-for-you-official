@@ -5,7 +5,15 @@ import './Carousal.css'
 function CarouselItem(props) {
     const navigate = useNavigate()
     const viewDetailedPost = async()=>{
-        navigate(`/posts/${props.postedTime}`)
+        if(props.postType!=='null'){
+            navigate(`/posts/${props.postedTime}`)
+        }
+        if(props.censorRating!=='null'){
+            navigate(`/suggestion/${props.postedTime}`)
+        }
+        if(props.intro!=='null'){
+            navigate(`/reviews/${props.postedTime}`)
+        }
     }
     return (
         <div className="card bg-dark text-white" onClick={viewDetailedPost} style={{

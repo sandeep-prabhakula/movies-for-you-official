@@ -55,31 +55,55 @@ function DetailedSuggestion() {
     const getRecentPosts = () => {
         // caching
 
-        let allPosts = JSON.parse(window.sessionStorage.getItem('recentPosts'));
-        if (allPosts !== null && allPosts.length !== 0) {
+        let cachedRecentPosts = JSON.parse(window.sessionStorage.getItem('recentPosts'));
+        if (cachedRecentPosts !== null && cachedRecentPosts.length !== 0) {
+            // console.log(cachedRecentPosts)
             let tempRecentPosts = []
-            if (allPosts.length <= 5) {
-                setRecentPosts(allPosts.filter((item) => {
+            if (cachedRecentPosts.length <= 5) {
+                setRecentPosts(cachedRecentPosts.filter((item) => {
                     return item.postedTime !== Number(suggestionID)
                 }))
             }
             else {
-                for (let i = 0; i <= 5; i++) {
-                    if (Number(suggestionID) !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
+                for (let i = 0; i < cachedRecentPosts.length; i++) {
+                    if (Number(suggestionID) !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
                 }
 
                 setRecentPosts(tempRecentPosts)
             }
         } else {
             const docRef = collection(firestore, 'Posts')
-            const q = query(docRef,orderBy('postedTime','desc'),limit(6))
+            const reviewRef = collection(firestore,'Reviews')
+            const suggestionRef = collection(firestore,'Suggestions')
+            let data = []
+            const q = query(docRef,orderBy('postedTime','desc'),limit(5))
             onSnapshot(q, (snapshot) => {
-                let data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
+                data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
                     return doc.postedTime !== Number(suggestionID)
                 })
                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
-                setRecentPosts(data)
             })
+            const reviewQ = query(reviewRef,orderBy('postedTime','desc'),limit(2))
+            onSnapshot(reviewQ,(snapshot)=>{
+                data = data.concat(snapshot.docs.map(doc=>doc.data()).filter((item)=>{
+                    return doc.postedTime !== Number(suggestionID)
+                }))
+                window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
+            })
+            const suggestionQ = query(suggestionRef,orderBy('postedTime','desc'),limit(2))
+            onSnapshot(suggestionQ,(snapshot)=>{
+                data = data.concat(snapshot.docs.map(doc=>doc.data()).filter((item)=>{
+                    return item.postedTime!== Number(suggestionID)
+                }))
+                window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
+            })
+            data = data.sort((a, b)=> { 
+                return a.postedTime - b.postedTime 
+              })
+              window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
+              data = JSON.parse(window.sessionStorage.getItem('recentPosts'))
+            setRecentPosts(data)
+            // console.log(recentPosts)
         }
     }
 
@@ -188,6 +212,8 @@ function DetailedSuggestion() {
 
     useEffect(() => {
         window.scrollTo(0, 0)
+        setRatedStars([])
+        setLeftStars([])
         let allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
         if (allSuggestions !== null && allSuggestions.length !== 0) {
             allSuggestions = allSuggestions.filter((item) => {
@@ -205,17 +231,29 @@ function DetailedSuggestion() {
             setWhereToWatch(allSuggestions[0].whereToWatch)
             setWrittenBy(allSuggestions[0].writtenBy)
             setYearOfRelease(allSuggestions[0].yearOfRelease)
+            getRatings()
         } else {
             getCurrentSuggestion()
+            getRatings()
         }
         setTimeout(() => {
             getRecentPosts()
         }, 4000)
 
+        setTimeout(()=>{
+            const cachedAllPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
+            if(cachedAllPosts===null)getAllPosts()
+        },6000)
+
+        setTimeout(() => {
+            const cachedReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
+            if (cachedReviews === null) getReviews()
+        }, 6000)
+
         setTimeout(() => {
             const cachedSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
             if (cachedSuggestions === null) getSuggestions()
-        }, 10000)
+        }, 6000)
     }, [])
     return (
         <>
@@ -239,8 +277,8 @@ function DetailedSuggestion() {
 
             <UserRatingLayout postID={suggestionID} postType="Suggestions" uniqueEmail={uniqueEmail} getRatings={getRatings} ratedStars={ratedStars} leftStars={leftStars} />
 
-            <PostYouMightLike recentPosts={recentPosts} />
-            {/* <UserComments postID={reviewID}/> */}
+            <PostYouMightLike recentPosts={recentPosts} postID={suggestionID}/>
+            {/* <UserComments postID={suggestionID}/> */}
             <CommentForm postID={suggestionID} />
             <SocialProfiles />
         </>

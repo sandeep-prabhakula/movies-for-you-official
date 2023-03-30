@@ -4,7 +4,7 @@ import Carousel from 'react-multi-carousel'
 import ReviewCarouselItem from './ReviewCarouselItem';
 
 function ReviewCarousel(props) {
-    const reviews = props.reviews.slice(0,5)
+    const reviews = props.reviews
     return (
         <>
             <div className="container mt-3 mb-1">
@@ -32,7 +32,7 @@ function ReviewCarousel(props) {
                     {reviews.map((element)=>{
                         return <div key={element.postedTime}>
                             <div className="container">
-                                <ReviewCarouselItem postedTime={element.postedTime} movieTitle={element.movieTitle} imageURL={element.imageURL}/>
+                                <ReviewCarouselItem postedTime={element.postedTime} title={element.title} imageURL={element.imageURL}/>
                             </div>
                         </div>
                     })}

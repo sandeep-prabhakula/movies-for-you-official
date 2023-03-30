@@ -19,7 +19,7 @@ function ReviewCardItem(props) {
                     display: "-webkit-box",
                     WebkitLineClamp: "2",
                     WebkitBoxOrient: "vertical",
-                }}>{props.title}</p>
+                }}>{props.title} </p>
             </div>
         </div>
 
