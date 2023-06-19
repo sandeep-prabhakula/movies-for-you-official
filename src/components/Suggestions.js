@@ -10,24 +10,41 @@ function Suggestions(props) {
     const { genre } = useParams()
     const collectionRef = collection(firestore, 'Suggestions')
     const [genreSuggestions, setGenreSuggestions] = useState([])
+    const [suggestions, setSuggestions] = useState([])
+    const allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
     const cacheSuggestions = JSON.parse(window.sessionStorage.getItem(genre))
+
     const getGenreSuggestions = async () => {
         if (cacheSuggestions !== null && cacheSuggestions.length !== 0) {
             setGenreSuggestions(cacheSuggestions)
         } else {
             onSnapshot(collectionRef, (snapshot) => {
-                setGenreSuggestions(snapshot.docs.map(doc=>doc.data()).filter((item) => {
-                    
+                setGenreSuggestions(snapshot.docs.map(doc => doc.data()).filter((item) => {
+
                     return item.genre.toLowerCase().includes(genre)
                 }).reverse())
-                window.sessionStorage.setItem(genre, JSON.stringify(snapshot.docs.map(doc=>doc.data()).filter((item) => {
+                window.sessionStorage.setItem(genre, JSON.stringify(snapshot.docs.map(doc => doc.data()).filter((item) => {
                     return item.genre.toLowerCase().includes(genre)
                 })))
             })
         }
     }
+    const getSuggestions = async () => {
+        if (allSuggestions !== null && allSuggestions.length !== 0) {
+            setSuggestions(allSuggestions)
+        } else {
+            onSnapshot(collectionRef, (snapshot) => {
+                setSuggestions(snapshot.docs.map(doc => doc.data()).reverse())
+                window.sessionStorage.setItem(allSuggestions, JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
+            })
+        }
+    }
     useEffect(() => {
-        getGenreSuggestions()
+
+        // currently the below method is disabled
+        // getGenreSuggestions()
+        getSuggestions()
+
     }, [])
     return (
         <>
@@ -35,7 +52,7 @@ function Suggestions(props) {
             <SocialProfiles />
             <div className="container mt-2">
                 <div className="row">
-                    {genreSuggestions ? genreSuggestions.map((suggestion) => {
+                    {suggestions ? suggestions.map((suggestion) => {
                         return <div key={suggestion.postedTime} className="col-md-4">
                             <SuggestionItem id={suggestion.postedTime}
                                 imageURL={suggestion.imageURL}

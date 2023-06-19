@@ -1,61 +1,67 @@
 import React from 'react'
 import { firestore } from '../firebase'
-import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { useEffect, useState } from 'react';
 import SocialProfiles from './SocialProfiles';
 import Navbar from './NavBar';
 import Carousal from './Carousal';
 import ReviewCarousel from './ReviewCarousel';
 import SuggestionCarousel from './SuggestionCarousel';
+import AdContent from './AdContent';
+import { getAnalytics, logEvent } from 'firebase/analytics'
+import { Helmet } from 'react-helmet-async';
+
 function MainPage() {
     const [slides, setSlides] = useState([])
-    const [reviews,setReviews] = useState([])
-    const [suggestions,setSuggestions] = useState([])
+    const [reviews, setReviews] = useState([])
+    const [suggestions, setSuggestions] = useState([])
 
     const getTopPosts = async () => {
 
         let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
         if (allPosts !== null && allPosts.length !== 0) {
             setSlides(JSON.parse(window.sessionStorage.getItem('allPosts')))
-        }else{
+        } else {
             const docRef = collection(firestore, 'Posts')
-             onSnapshot(docRef, (snapshot) => {
-                 let data = snapshot.docs.map(doc => doc.data()).reverse()
-                 window.sessionStorage.setItem('allPosts',JSON.stringify(data))
-                 setSlides(data)
-             })
+            onSnapshot(docRef, (snapshot) => {
+                let data = snapshot.docs.map(doc => doc.data()).reverse()
+                window.sessionStorage.setItem('allPosts', JSON.stringify(data))
+                setSlides(data)
+            })
         }
     }
 
-    const getReviews = async ()=>{
+    const getReviews = async () => {
         let allReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
-        if(allReviews!==null && allReviews.length!==0){
+        if (allReviews !== null && allReviews.length !== 0) {
             setReviews(allReviews)
-        }else{
-            const docRef = collection(firestore,'Reviews')
-            onSnapshot(docRef,(snapshot)=>{
-                let data = snapshot.docs.map(doc=>doc.data()).reverse()
-                window.sessionStorage.setItem('reviews',JSON.stringify(data))
+        } else {
+            const docRef = collection(firestore, 'Reviews')
+            onSnapshot(docRef, (snapshot) => {
+                let data = snapshot.docs.map(doc => doc.data()).reverse()
+                window.sessionStorage.setItem('reviews', JSON.stringify(data))
                 setReviews(data)
             })
         }
     }
 
-    const getSuggestions = async ()=>{
+    const getSuggestions = async () => {
         let allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
-        if(allSuggestions!==null && allSuggestions.length!==0){
+        if (allSuggestions !== null && allSuggestions.length !== 0) {
             setSuggestions(allSuggestions)
-        }else{
-            const docRef = collection(firestore,"Suggestions")
-            onSnapshot(docRef,(snapshot)=>{
-                let data = snapshot.docs.map(doc=>doc.data()).reverse()
-                window.sessionStorage.setItem('suggestions',JSON.stringify(data))
+        } else {
+            const docRef = collection(firestore, "Suggestions")
+            onSnapshot(docRef, (snapshot) => {
+                let data = snapshot.docs.map(doc => doc.data()).reverse()
+                window.sessionStorage.setItem('suggestions', JSON.stringify(data))
                 setSuggestions(data)
             })
         }
     }
 
     useEffect(() => {
+        const analytics = getAnalytics();
+        logEvent(analytics, "HomePage")
         getTopPosts()
         getReviews()
         getSuggestions()
@@ -63,6 +69,12 @@ function MainPage() {
 
     return (
         <>
+            <Helmet>
+                <title>Movies4U Official</title>
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content='movies4u_officl' />
+            </Helmet>
             <Navbar />
             <SocialProfiles />
             <div className='container'>
@@ -74,18 +86,18 @@ function MainPage() {
                 <Carousal postType='Latest Updates' slides={slides.filter((item) => {
                     return item.postType === 'Latest Updates'
                 })} />
-
+                <AdContent />
                 <Carousal postType='Latest Buzz' slides={slides.filter((item) => {
                     return item.postType === 'Latest Buzz'
                 })} />
 
-                <ReviewCarousel reviews={reviews}/>
-
+                <ReviewCarousel reviews={reviews} />
+                <AdContent />
                 <SuggestionCarousel suggestions={suggestions} />
 
-                <Carousal postType='Box Office Collections' slides={slides.filter((item) => {
+                {/* <Carousal postType='Box Office Collections' slides={slides.filter((item) => {
                     return item.postType === 'Box Office Collections'
-                })} />
+                })} /> */}
 
 
 

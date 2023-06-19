@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore }from "firebase/firestore"
 import { getStorage } from "firebase/storage"
 import {getMessaging} from 'firebase/messaging'
+import {getAnalytics} from 'firebase/analytics'
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -18,4 +19,5 @@ export const auth = getAuth(app);
 export const firestore = getFirestore(app)
 export const storage = getStorage(app);
 export const messaging = getMessaging(app);
+export const analytics = getAnalytics(app);
 export default app;

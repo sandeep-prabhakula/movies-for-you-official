@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { onSnapshot, collection, query, where, orderBy, } from 'firebase/firestore'
+import { onSnapshot, collection, query, where } from 'firebase/firestore'
 import { firestore } from '../firebase'
 import ReviewItem from "./ReviewItem";
 import SocialProfiles from "./SocialProfiles";

@@ -14,6 +14,8 @@ import SuggestionCardComponent from './SuggestionCardComponent';
 import { firestore } from '../firebase';
 import UserRatingLayout from './UserRatingLayout';
 import CommentForm from './CommentForm';
+import MetaDecorator from './MetaDecorator';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 function DetailedSuggestion() {
     const { suggestionID } = useParams()
@@ -211,6 +213,8 @@ function DetailedSuggestion() {
 
 
     useEffect(() => {
+        const analytics = getAnalytics();
+        logEvent(analytics,title)
         window.scrollTo(0, 0)
         setRatedStars([])
         setLeftStars([])
@@ -257,6 +261,7 @@ function DetailedSuggestion() {
     }, [])
     return (
         <>
+            <MetaDecorator title={title} description={description} imageURL={imageURL}/>
             <Navbar />
             <PostPath title={title} postType="Suggestions" />
             <SuggestionCardComponent

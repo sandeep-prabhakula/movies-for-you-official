@@ -13,6 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import PostYouMightLike from './PostYouMightLike';
 import RateMovie from './RateMovie';
 import UserComments from './UserComments';
+import AdContent from './AdContent';
+import MetaDecorator from './MetaDecorator';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 function DetailedReview() {
     const { reviewID } = useParams();
@@ -218,9 +221,12 @@ function DetailedReview() {
     }
 
     useEffect(() => {
+        const analytics = getAnalytics();
+        logEvent(analytics,movieTitle)
         window.scrollTo(0, 0)
         setRatedStars([])
         setLeftStars([])
+
         let allReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
         if (allReviews !== null && allReviews !== 0) {
             allReviews = allReviews.filter((item) => {
@@ -254,7 +260,6 @@ function DetailedReview() {
 
 
 
-
         setTimeout(() => {
             const cachedAllPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
             if (cachedAllPosts === null) getAllPosts()
@@ -275,7 +280,9 @@ function DetailedReview() {
     return (
         <>
             <Navbar />
+            <MetaDecorator title={movieTitle} description={intro} imageURL={imageURL}/>
             <PostPath title={movieTitle} postType="Reviews" />
+            <AdContent/>
             <ReviewCardComponent
                 actorPerformances={actorPerformances}
                 directedBy={directedBy}

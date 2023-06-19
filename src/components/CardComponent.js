@@ -1,5 +1,6 @@
 import React from 'react'
 import './CardComponent.css'
+import AdContent from './AdContent'
 function CardComponent(props) {
     return (
         <div className=" d-flex flex-column justify-content-center">
@@ -15,6 +16,7 @@ function CardComponent(props) {
                 <img src={props.imageURL} alt={props.title} className='img-fluid mBanner' />
 
             </div>
+            <AdContent/>
             <div className='container description'>
                 {props.description.split('\\n').map((paragraph) => {
                     return <p className='openSans mt-3'>{paragraph}</p>

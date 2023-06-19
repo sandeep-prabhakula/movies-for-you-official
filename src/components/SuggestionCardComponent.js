@@ -1,14 +1,15 @@
 import React from 'react'
+import AdContent from './AdContent'
 
 function SuggestionCardComponent(props) {
     return (
         <div className='d-flex flex-column justify-content-center'>
             <div className='container d-flex flex-column justify-content-between'>
-            <h1 className=''>
-                <strong>
-                    {props.title}
-                </strong>
-            </h1>
+                <h1 className=''>
+                    <strong>
+                        {props.title}
+                    </strong>
+                </h1>
                 <small className=''>
                     {props.writtenBy} | {new Date(props.postedTime).toString().slice(4, 21).split(/[ ,]+/).join(' ')} IST
                 </small>
@@ -17,14 +18,14 @@ function SuggestionCardComponent(props) {
             <div className='container d-flex flex-column justify-content-center align-items-center'>
                 <img src={props.imageURL} alt={props.title} className='img-fluid mBanner' />
             </div>
-
+            <AdContent />
             <div className="container description mt-3">
                 <h2 className='bebasneue'>Description : </h2>
                 {props.description.split('\\n').map((paragraph) => {
                     return <p className='openSans mt-3'>{paragraph}</p>
                 })}
             </div>
-
+            <AdContent />
             <div className="container movieDetails d-flex flex-column mt-2 mb-3">
                 <h2 className='bebasneue'>Movie Details : </h2>
                 <div className="container">

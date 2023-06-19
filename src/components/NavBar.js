@@ -113,9 +113,9 @@ function Navbar() {
                             <li className={`nav-item ${location.pathname === "/suggestions" ? 'active' : ''}`}>
                                 <Link className="nav-link" to="/suggestions">Suggestions</Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/box-office-collections" ? 'active' : ''}`} to="/box-office-collections">Box Office Collections</Link>
-                            </li>
+                            </li> */}
                             {/* <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/add-post" ? 'active' : ''}`} style={{
                                     display: user.uid && user.uid === process.env.REACT_APP_ADMIN_UID  ? 'flex' : 'none'

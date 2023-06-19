@@ -13,7 +13,9 @@ import PostYouMightLike from './PostYouMightLike';
 import UserComments from './UserComments';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from "../context/UserAuthContext";
-
+import AdContent from './AdContent';
+import MetaDecorator from './MetaDecorator';
+import {getAnalytics,logEvent} from 'firebase/analytics'
 function DetailedPost(props) {
     // postID from url
     const { postID } = useParams();
@@ -182,6 +184,8 @@ function DetailedPost(props) {
 
     useEffect(() => {
         //unmounts every time postID changes
+        const analytics = getAnalytics();
+        logEvent(analytics,title)
         window.scrollTo(0, 0)
         getCurrentPost()
         setTimeout(()=>{
@@ -211,12 +215,16 @@ function DetailedPost(props) {
     return (
         <>
             <Navbar />
-
+            <MetaDecorator title={title} description={description} imageURL={imageURL}/>
             <PostPath title={title} postType={postType} />
+
+            <AdContent/>
 
             <CardComponent postID={postID} title={title} postedTime={postedTime} imageURL={imageURL} description={description} writtenBy={writtenBy} />
 
             {/* Post You Might Like */}
+
+            <AdContent/>
 
             <PostYouMightLike recentPosts={recentPosts} postID={postID} />
 

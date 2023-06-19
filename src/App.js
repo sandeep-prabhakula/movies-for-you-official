@@ -24,7 +24,10 @@ import Suggestions from "./components/Suggestions";
 import DetailedReview from "./components/DetailedReview";
 import DetailedSuggestion from "./components/DetailedSuggestion";
 import Reviews from "./components/Reviews";
+
+
 function App() {
+
   const collectionRef = collection(firestore, 'Posts')
   const suggestionRef = collection(firestore, 'Suggestions')
   const reviewRef = collection(firestore, 'Reviews')
@@ -59,7 +62,7 @@ function App() {
       setReviews(snapshot.docs.map(doc => doc.data()).reverse())
       window.sessionStorage.setItem("reviews", JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
       window.localStorage.setItem("reviews", JSON.stringify(reviews))
-    })  
+    })
   }
 
   useEffect(() => {
@@ -73,14 +76,20 @@ function App() {
 
   return (
     <>
+
+
+
       <UserAuthContextProvider>
         <Router>
           <Routes>
             <Route exact path="/" element={<MainPage />} />
             <Route exact path="/exclusive-updates" element={<Home postType="Exclusive Updates" />} />
-            <Route exact path="/reviews" element={<Reviews/>} />
+            <Route exact path="/reviews" element={<Reviews />} />
             <Route exact path='/latest-buzz' element={<Home postType='Latest Buzz' />} />
-            <Route exact path="/suggestions" element={<SuggestionsGenre />} />
+
+            {/* The below route is disabled temperorily */}
+            {/* <Route exact path="/suggestions" element={<SuggestionsGenre />} /> */}
+            <Route exact path="/suggestions" element={<Suggestions />} />
             <Route exact path="/box-office-collections" element={<Home postType="Box Office Collections" />} />
             <Route exact path="/login" element={<Login />} />
             {/* <Route exact path="/add-post" element={<ProtectedRoute><AddPost/></ProtectedRoute>}/> */}
@@ -93,14 +102,17 @@ function App() {
             <Route exact path="/contact-us" element={<ContactUs />} />
             <Route path='/posts/:postID' element={<DetailedPost allPosts={allPosts} />} />
             <Route exact path='/disclaimer' element={<Disclaimer />} />
-            <Route path='/suggestions/:genre' element={<Suggestions suggestions={suggestions}/>} />
+
+            {/* the below route is temporarily disabled  */}
+            {/* <Route path='/suggestions/:genre' element={<Suggestions suggestions={suggestions}/>} /> */}
             <Route path='*' element={<NotFound />} />
-            <Route path='/reviews/:reviewID' element={<DetailedReview/>}/>
-            <Route path='/suggestion/:suggestionID' element={<DetailedSuggestion/>}/>
+            <Route path='/reviews/:reviewID' element={<DetailedReview />} />
+            <Route path='/suggestion/:suggestionID' element={<DetailedSuggestion />} />
           </Routes>
           <Footer></Footer>
         </Router>
       </UserAuthContextProvider>
+
     </>
   );
 }
