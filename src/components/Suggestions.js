@@ -5,6 +5,7 @@ import { firestore } from '../firebase'
 import Navbar from './NavBar'
 import SocialProfiles from './SocialProfiles'
 import SuggestionItem from './SuggestionItem'
+import { Helmet } from 'react-helmet-async'
 
 function Suggestions(props) {
     const { genre } = useParams()
@@ -48,6 +49,9 @@ function Suggestions(props) {
     }, [])
     return (
         <>
+            <Helmet>
+                <title>Suggestions</title>
+            </Helmet>
             <Navbar />
             <SocialProfiles />
             <div className="container mt-2">

@@ -4,42 +4,46 @@ import { firestore } from '../firebase'
 import Navbar from './NavBar'
 import ReviewCardItem from './ReviewCardItem'
 import SocialProfiles from './SocialProfiles'
+import { Helmet } from 'react-helmet-async'
 
 function Reviews() {
     const cacheReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
-    const collectionRef = collection(firestore,"Reviews")
-    const [reviews,setReviews] = useState([])
-    const getReviews = async()=>{
-        if(cacheReviews!==null && cacheReviews.length!==0){
+    const collectionRef = collection(firestore, "Reviews")
+    const [reviews, setReviews] = useState([])
+    const getReviews = async () => {
+        if (cacheReviews !== null && cacheReviews.length !== 0) {
             setReviews(cacheReviews)
-        }else{
-            onSnapshot(collectionRef,(snapshot)=>{
-                setReviews(snapshot.docs.map(doc=>doc.data()).reverse())
-                window.sessionStorage.setItem('reviews',JSON.stringify(snapshot.docs.map(doc=>doc.data()).reverse()))
+        } else {
+            onSnapshot(collectionRef, (snapshot) => {
+                setReviews(snapshot.docs.map(doc => doc.data()).reverse())
+                window.sessionStorage.setItem('reviews', JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
             })
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         getReviews()
-    },[])
-  return (
-    <>
-        <Navbar/>
-        <SocialProfiles/>
-        <div className="container mt-2">
-            <div className="row">
-                {reviews.map((element)=>{
-                    return <div className='col-md-4' key={element.postedTime}>
-                        <ReviewCardItem id={element.postedTime}
-                            imageURL={element.imageURL}
-                            title={element.title}
-                        />
-                    </div>
-                })}
+    }, [])
+    return (
+        <>
+            <Helmet>
+                <title>Reviews</title>
+            </Helmet>
+            <Navbar />
+            <SocialProfiles />
+            <div className="container mt-2">
+                <div className="row">
+                    {reviews.map((element) => {
+                        return <div className='col-md-4' key={element.postedTime}>
+                            <ReviewCardItem id={element.postedTime}
+                                imageURL={element.imageURL}
+                                title={element.title}
+                            />
+                        </div>
+                    })}
+                </div>
             </div>
-        </div>
-    </>
-  )
+        </>
+    )
 }
 
 export default Reviews

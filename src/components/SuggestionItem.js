@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom'
 function SuggestionItem(props) {
     const navigate = useNavigate()
     const viewDetailedPost = async () => {
-        navigate(`/suggestion/${props.id}`)
+        const endPoint = props.title.replaceAll(' ','-')
+        navigate(`/suggestion/${endPoint}`,{state:{
+            id:props.id
+        }})
     }
   return (
     <div className="card mb-2 border border-dark border-1 d-flex" onClick={viewDetailedPost} style={{

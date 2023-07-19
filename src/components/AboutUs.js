@@ -1,11 +1,22 @@
 import React from 'react'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 function AboutUs() {
-    useEffect(()=>{
-        window.scrollTo(0,0)
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
     return (
         <div className="container mt-3">
+            <Helmet>
+                <title>About Us</title>
+
+                <meta property='og:title' content='About Us' />
+                <meta property='og:description' content='Get the complete view about who we are.' />
+                <meta property='og:url' content={window.location.pathname + window.location.search} />
+                <meta property='og:type' content='article' />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content='movies4u_officl' />
+            </Helmet>
             <article>
                 <section>
                     <header>

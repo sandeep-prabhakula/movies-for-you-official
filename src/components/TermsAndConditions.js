@@ -1,13 +1,24 @@
 import React from 'react'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 
 function TermsAndConditions() {
     useEffect(() => {
-      window.scrollTo(0,0)
+        window.scrollTo(0, 0)
     }, [])
-    
+
     return (
         <div className='container mt-2'>
+            <Helmet>
+                <title>Terms and Conditions</title>
+
+                <meta property='og:title' content='Terms and Conditions' />
+                <meta property='og:description' content='Be aware of our terms and conditions' />
+                <meta property='og:url' content={window.location.pathname + window.location.search} />
+                <meta property='og:type' content='article' />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content='movies4u_officl' />
+            </Helmet>
             <h2><strong>Terms and Conditions</strong></h2>
             <p>
                 <strong>Use of Content:</strong>   All content published on this website is exclusively for personal use only. Visitors may not use the content for commercial purposes, reproduction, or distribution without obtaining prior written consent from the website owner.

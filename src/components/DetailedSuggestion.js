@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion, query, orderBy, limit } from 'firebase/firestore'
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,8 @@ import MetaDecorator from './MetaDecorator';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 
 function DetailedSuggestion() {
-    const { suggestionID } = useParams()
+    const location = useLocation()
+    const suggestionID  = location.state.id
 
     // get current suggestion
     const [censorRating, setCensorRating] = useState('')
@@ -63,12 +64,12 @@ function DetailedSuggestion() {
             let tempRecentPosts = []
             if (cachedRecentPosts.length <= 5) {
                 setRecentPosts(cachedRecentPosts.filter((item) => {
-                    return item.postedTime !== Number(suggestionID)
+                    return item.postedTime !== suggestionID
                 }))
             }
             else {
                 for (let i = 0; i < cachedRecentPosts.length; i++) {
-                    if (Number(suggestionID) !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
+                    if (suggestionID !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
                 }
 
                 setRecentPosts(tempRecentPosts)
@@ -81,21 +82,21 @@ function DetailedSuggestion() {
             const q = query(docRef,orderBy('postedTime','desc'),limit(5))
             onSnapshot(q, (snapshot) => {
                 data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
-                    return doc.postedTime !== Number(suggestionID)
+                    return doc.postedTime !== suggestionID
                 })
                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
             })
             const reviewQ = query(reviewRef,orderBy('postedTime','desc'),limit(2))
             onSnapshot(reviewQ,(snapshot)=>{
                 data = data.concat(snapshot.docs.map(doc=>doc.data()).filter((item)=>{
-                    return doc.postedTime !== Number(suggestionID)
+                    return doc.postedTime !== suggestionID
                 }))
                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
             })
             const suggestionQ = query(suggestionRef,orderBy('postedTime','desc'),limit(2))
             onSnapshot(suggestionQ,(snapshot)=>{
                 data = data.concat(snapshot.docs.map(doc=>doc.data()).filter((item)=>{
-                    return item.postedTime!== Number(suggestionID)
+                    return item.postedTime!== suggestionID
                 }))
                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
             })
@@ -221,7 +222,7 @@ function DetailedSuggestion() {
         let allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
         if (allSuggestions !== null && allSuggestions.length !== 0) {
             allSuggestions = allSuggestions.filter((item) => {
-                return item.postedTime === Number(suggestionID)
+                return item.postedTime === suggestionID
             })
             setCensorRating(allSuggestions[0].censorRating)
             setDescription(allSuggestions[0].description)

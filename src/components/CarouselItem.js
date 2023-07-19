@@ -5,14 +5,21 @@ import './Carousal.css'
 function CarouselItem(props) {
     const navigate = useNavigate()
     const viewDetailedPost = async()=>{
+        const payload = {state:{
+            id:props.postedTime
+        }}
+        const endPoint = props.title.replaceAll(' ','-')
         if(props.postType!=='null'){
-            navigate(`/posts/${props.postedTime}`)
+            let endPoint = props.title.replaceAll(': ',"-")
+            endPoint = endPoint.replaceAll(' ','-')
+            navigate(`/posts/${endPoint}`,payload)
         }
         if(props.censorRating!=='null'){
-            navigate(`/suggestion/${props.postedTime}`)
+            navigate(`/suggestion/${endPoint}`,payload)
         }
         if(props.intro!=='null'){
-            navigate(`/reviews/${props.postedTime}`)
+            
+            navigate(`/reviews/${endPoint}`,payload)
         }
     }
     return (

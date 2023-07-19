@@ -1,11 +1,22 @@
 import React, { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 
 function PrivacyPolicy() {
-    useEffect(()=>{
-        window.scrollTo(0,0)
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
     return (
         <div className='container mt-2'>
+            <Helmet>
+                <title>Privacy Policy</title>
+
+                <meta property='og:title' content='Privacy Policy' />
+                <meta property='og:description' content='Know more about our website policies.' />
+                <meta property='og:url' content={window.location.pathname + window.location.search} />
+                <meta property='og:type' content='article' />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content='movies4u_officl' />
+            </Helmet>
             <h2>
                 <strong>
                     Privacy Policy

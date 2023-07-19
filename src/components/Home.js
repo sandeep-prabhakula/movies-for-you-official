@@ -6,6 +6,7 @@ import { firestore } from '../firebase'
 import ReviewItem from "./ReviewItem";
 import SocialProfiles from "./SocialProfiles";
 import Navbar from "./NavBar";
+import { Helmet } from "react-helmet-async";
 
 const Home = (props) => {
   const [reviews, setReviews] = useState([])
@@ -39,13 +40,16 @@ const Home = (props) => {
   // useEffect(()=>{},[parameter1,parameter2,...]) -> runs every time when there is change in parameters
   // useEffect(()=>{}) -> runs every time 
   useEffect(() => {
-    document.title = `Movies4u-official-${props.postType}`
+    // document.title = `Movies4u-official-${props.postType}`
     updatePosts()
     // eslint-disable-next-line
   }, [props.postType])
 
   return (
     <div>
+      <Helmet>
+        <title>{props.postType}</title>
+      </Helmet>
       <Navbar />
       <SocialProfiles />
       <div className='container'>

@@ -71,7 +71,9 @@ function MainPage() {
         <>
             <Helmet>
                 <title>Movies4U Official</title>
-
+                <meta property='og:title' content='Movies4U Official'/>
+                <meta property='og:description' content='Movies4U official is the best site ever to circulate movie updates, reviews and suggestions with best in class user-experience and lot of exclusive and real content. Provides exclusive updates on upcoming movies and trending topics' />
+                <meta property='og:image' content='/logo.jpg' />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content='movies4u_officl' />
             </Helmet>

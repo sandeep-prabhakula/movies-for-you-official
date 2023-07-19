@@ -5,7 +5,10 @@ import './Carousal.css'
 function ReviewCarouselItem(props) {
     const navigate = useNavigate()
     const viewDetailedPost = async()=>{
-        navigate(`/reviews/${props.postedTime}`)
+        const endPoint = props.title.replaceAll(' ','-')
+        navigate(`/reviews/${endPoint}`,{state:{
+            id:props.postedTime
+        }})
     }
   return (
     <div className="card bg-dark text-white" onClick={viewDetailedPost} style={{

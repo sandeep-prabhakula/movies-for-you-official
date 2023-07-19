@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
 import { firestore } from '../firebase';
 import CommentForm from './CommentForm';
 import Navbar from './NavBar'
@@ -16,9 +15,11 @@ import UserComments from './UserComments';
 import AdContent from './AdContent';
 import MetaDecorator from './MetaDecorator';
 import { getAnalytics, logEvent } from 'firebase/analytics';
-
+import { useLocation } from 'react-router-dom';
 function DetailedReview() {
-    const { reviewID } = useParams();
+    const location = useLocation();
+    
+    const reviewID  = location.state.id;
     // getCurrentReview
     const [actorPerformances, setActorPerformances] = useState('')
     const [directedBy, setDirectedBy] = useState('')
@@ -71,12 +72,12 @@ function DetailedReview() {
             let tempRecentPosts = []
             if (cachedRecentPosts.length <= 5) {
                 setRecentPosts(cachedRecentPosts.filter((item) => {
-                    return item.postedTime !== Number(reviewID)
+                    return item.postedTime !== reviewID
                 }))
             }
             else {
                 for (let i = 0; i < cachedRecentPosts.length; i++) {
-                    if (Number(reviewID) !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
+                    if (reviewID !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
                 }
 
                 setRecentPosts(tempRecentPosts)
@@ -89,21 +90,21 @@ function DetailedReview() {
             const q = query(docRef, orderBy('postedTime', 'desc'), limit(5))
             onSnapshot(q, (snapshot) => {
                 data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
-                    return doc.postedTime !== Number(reviewID)
+                    return doc.postedTime !== reviewID
                 })
                 window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
             })
             const reviewQ = query(reviewRef, orderBy('postedTime', 'desc'), limit(2))
             onSnapshot(reviewQ, (snapshot) => {
                 data = data.concat(snapshot.docs.map(doc => doc.data()).filter((item) => {
-                    return doc.postedTime !== Number(reviewID)
+                    return doc.postedTime !== reviewID
                 }))
                 window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
             })
             const suggestionQ = query(suggestionRef, orderBy('postedTime', 'desc'), limit(2))
             onSnapshot(suggestionQ, (snapshot) => {
                 data = data.concat(snapshot.docs.map(doc => doc.data()).filter((item) => {
-                    return item.postedTime !== Number(reviewID)
+                    return item.postedTime !== reviewID
                 }))
                 window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
             })
@@ -230,7 +231,7 @@ function DetailedReview() {
         let allReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
         if (allReviews !== null && allReviews !== 0) {
             allReviews = allReviews.filter((item) => {
-                return item.postedTime === Number(reviewID)
+                return item.postedTime === reviewID
             })
             setActorPerformances(allReviews[0].actorPerformances)
             setDirectedBy(allReviews[0].directedBy)

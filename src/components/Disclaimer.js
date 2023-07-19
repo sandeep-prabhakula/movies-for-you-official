@@ -1,11 +1,22 @@
 import React, { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 
 function Disclaimer() {
-    useEffect(()=>{
-        window.scrollTo(0,0)
-    },[])
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
     return (
         <div className='container mt-2'>
+            <Helmet>
+                <title>Disclaimer</title>
+
+                <meta property='og:title' content='Disclaimer' />
+                <meta property='og:description' content='Disclaimer' />
+                <meta property='og:url' content={window.location.pathname + window.location.search} />
+                <meta property='og:type' content='article' />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content='movies4u_officl' />
+            </Helmet>
             <h2>
                 <strong>
                     Disclaimer :

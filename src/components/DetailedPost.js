@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { firestore } from '../firebase'
-import { doc, getDoc, collection, onSnapshot,updateDoc,arrayUnion, query, orderBy, limit } from 'firebase/firestore'
+import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion, query, orderBy, limit } from 'firebase/firestore'
 import SocialProfiles from './SocialProfiles';
 import Navbar from './NavBar';
-import UserRatingLayout from './UserRatingLayout';
 import CommentForm from './CommentForm';
-import RateMovie from './RateMovie';
 import PostPath from './PostPath';
 import CardComponent from './CardComponent';
 import PostYouMightLike from './PostYouMightLike';
@@ -15,10 +13,12 @@ import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from "../context/UserAuthContext";
 import AdContent from './AdContent';
 import MetaDecorator from './MetaDecorator';
-import {getAnalytics,logEvent} from 'firebase/analytics'
+import { getAnalytics, logEvent } from 'firebase/analytics'
+
 function DetailedPost(props) {
     // postID from url
-    const { postID } = useParams();
+    const location = useLocation()
+    const postID  = location.state.id;
 
 
     //get currentPost
@@ -44,43 +44,43 @@ function DetailedPost(props) {
     }
 
 
-     // get recent posts
-     const [recentPosts, setRecentPosts] = useState([])
+    // get recent posts
+    const [recentPosts, setRecentPosts] = useState([])
 
-     const getRecentPosts = () => {
-         // caching
- 
-         let allPosts = JSON.parse(window.sessionStorage.getItem('recentPosts'));
-         if (allPosts !== null && allPosts.length !== 0) {
-             let tempRecentPosts = []
-             if (allPosts.length <= 5) {
-                 setRecentPosts(allPosts.filter((item) => {
-                     return item.postedTime !== Number(postID)
-                 }))
-             }
-             else {
-                 for (let i = 0; i <= 5; i++) {
-                     if (Number(postID) !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
-                 }
- 
-                 setRecentPosts(tempRecentPosts)
-             }
-         } else {
-             const docRef = collection(firestore, 'Posts')
-             const q = query(docRef,orderBy('postedTime','desc'),limit(6))
-             onSnapshot(q, (snapshot) => {
-                 let data = snapshot.docs.map(doc => doc.data()).filter((item)=>{
-                    return item.postedTime!==Number(postID)
-                 })
-                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
-                 setRecentPosts(data)
-             })
-         }
-     }
+    const getRecentPosts = () => {
+        // caching
+
+        let allPosts = JSON.parse(window.sessionStorage.getItem('recentPosts'));
+        if (allPosts !== null && allPosts.length !== 0) {
+            let tempRecentPosts = []
+            if (allPosts.length <= 5) {
+                setRecentPosts(allPosts.filter((item) => {
+                    return item.postedTime !== postID
+                }))
+            }
+            else {
+                for (let i = 0; i <= 5; i++) {
+                    if (postID !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
+                }
+
+                setRecentPosts(tempRecentPosts)
+            }
+        } else {
+            const docRef = collection(firestore, 'Posts')
+            const q = query(docRef, orderBy('postedTime', 'desc'), limit(6))
+            onSnapshot(q, (snapshot) => {
+                let data = snapshot.docs.map(doc => doc.data()).filter((item) => {
+                    return item.postedTime !== postID
+                })
+                window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
+                setRecentPosts(data)
+            })
+        }
+    }
 
 
 
-     const colors = {
+    const colors = {
         orange: "#FFBA5A",
         grey: "#a9a9a9"
 
@@ -122,7 +122,7 @@ function DetailedPost(props) {
                 setCurrentValue(0)
                 getRatings()
             }
-            else{
+            else {
                 console.log('null rating not accepted')
             }
         } else {
@@ -136,7 +136,7 @@ function DetailedPost(props) {
     const [ratedStars, setRatedStars] = useState([])
     const [leftStars, setLeftStars] = useState([])
     const [cumilativeRating, setCumilativeRating] = useState(0)
-    const [uniqueEmail,setUniqueEmails] = useState(0)
+    const [uniqueEmail, setUniqueEmails] = useState(0)
 
     //get Ratings
     const getRatings = async () => {
@@ -148,7 +148,7 @@ function DetailedPost(props) {
         setRatingList(rates)
         let sum = 0;
         for (let i = 0; i < rates.length; i++) {
-            if(!uniqueUsers.has(rates[i].email)){
+            if (!uniqueUsers.has(rates[i].email)) {
                 sum += rates[i].rating;
                 uniqueUsers.add(rates[i].email)
             }
@@ -185,17 +185,17 @@ function DetailedPost(props) {
     useEffect(() => {
         //unmounts every time postID changes
         const analytics = getAnalytics();
-        logEvent(analytics,title)
+        logEvent(analytics, title)
         window.scrollTo(0, 0)
         getCurrentPost()
-        setTimeout(()=>{
+        setTimeout(() => {
             getRecentPosts()
-        },4000)
+        }, 4000)
         
-        setTimeout(()=>{
+        setTimeout(() => {
             const cachedAllPosts = JSON.parse(window.sessionStorage.getItem('allPosts'))
-            if(cachedAllPosts===null)getAllPosts()
-        },6000)
+            if (cachedAllPosts === null) getAllPosts()
+        }, 6000)
 
         setTimeout(() => {
             const cachedReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
@@ -210,21 +210,21 @@ function DetailedPost(props) {
         // getRatings()
     }, [postID])
 
-   
+
 
     return (
         <>
             <Navbar />
-            <MetaDecorator title={title} description={description} imageURL={imageURL}/>
+            <MetaDecorator title={title} description={description} imageURL={imageURL} />
             <PostPath title={title} postType={postType} />
 
-            <AdContent/>
+            <AdContent />
 
             <CardComponent postID={postID} title={title} postedTime={postedTime} imageURL={imageURL} description={description} writtenBy={writtenBy} />
 
             {/* Post You Might Like */}
 
-            <AdContent/>
+            <AdContent />
 
             <PostYouMightLike recentPosts={recentPosts} postID={postID} />
 
