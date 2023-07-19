@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { firestore } from '../firebase'
 import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion, query, orderBy, limit } from 'firebase/firestore'
 import SocialProfiles from './SocialProfiles';
@@ -14,11 +14,11 @@ import { useUserAuth } from "../context/UserAuthContext";
 import AdContent from './AdContent';
 import MetaDecorator from './MetaDecorator';
 import { getAnalytics, logEvent } from 'firebase/analytics'
+import Loader from './Loader';
 
 function DetailedPost(props) {
     // postID from url
-    const location = useLocation()
-    const postID  = location.state.id;
+    const {postID}  = useParams()
 
 
     //get currentPost
@@ -55,12 +55,12 @@ function DetailedPost(props) {
             let tempRecentPosts = []
             if (allPosts.length <= 5) {
                 setRecentPosts(allPosts.filter((item) => {
-                    return item.postedTime !== postID
+                    return item.postedTime !== Number(postID)
                 }))
             }
             else {
                 for (let i = 0; i <= 5; i++) {
-                    if (postID !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
+                    if (Number(postID) !== allPosts[i].postedTime) tempRecentPosts.push(allPosts[i]);
                 }
 
                 setRecentPosts(tempRecentPosts)
@@ -70,7 +70,7 @@ function DetailedPost(props) {
             const q = query(docRef, orderBy('postedTime', 'desc'), limit(6))
             onSnapshot(q, (snapshot) => {
                 let data = snapshot.docs.map(doc => doc.data()).filter((item) => {
-                    return item.postedTime !== postID
+                    return item.postedTime !== Number(postID)
                 })
                 window.sessionStorage.setItem('recentPosts', JSON.stringify(data))
                 setRecentPosts(data)
@@ -211,7 +211,6 @@ function DetailedPost(props) {
     }, [postID])
 
 
-
     return (
         <>
             <Navbar />
@@ -226,7 +225,7 @@ function DetailedPost(props) {
 
             <AdContent />
 
-            <PostYouMightLike recentPosts={recentPosts} postID={postID} />
+            {recentPosts.length===0?<Loader/>:<PostYouMightLike recentPosts={recentPosts} postID={postID} />}
 
             {/* Comments */}
 

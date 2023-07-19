@@ -4,11 +4,7 @@ import { useNavigate } from 'react-router-dom'
 function ReviewCardItem(props) {
     const navigate = useNavigate()
     const viewDetailedPost = async () => {
-        const endPoint = props.title.replaceAll(' ','-')
-        console.log('The current end point is ',endPoint)
-        navigate(`/reviews/${endPoint}`,{state:{
-            id:props.id
-        }})
+        navigate(`/reviews/${props.id}`)
     }
     return (
 

@@ -4,12 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 function ReviewItem(props) {
     const navigate = useNavigate()
     const viewDetailedPost = async () => {
-        const payload = {state:{
-            id:props.id
-        }}
-        let endPoint = props.title.replaceAll(': ',"-")
-            endPoint = endPoint.replaceAll(' ','-')
-        navigate(`/posts/${endPoint}`,payload)
+        navigate(`/posts/${props.id}`)
     }
     return (
         <div className="card mb-2 border border-dark border-1 d-flex" onClick={viewDetailedPost} style={{

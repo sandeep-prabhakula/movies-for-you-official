@@ -4,10 +4,7 @@ import './Carousal.css'
 function SuggestionCarouselItem(props) {
     const navigate = useNavigate()
     const viewDetailedPost = async()=>{
-        const endPoint = props.title.replaceAll(' ','-');
-        navigate(`/suggestion/${endPoint}`,{state:{
-            id:props.postedTime
-        }})
+        navigate(`/suggestion/${props.postedTime}`)
     }
   return (
     <div className="card bg-dark text-white" onClick={viewDetailedPost} style={{

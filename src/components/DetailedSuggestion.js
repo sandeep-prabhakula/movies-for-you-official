@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { doc, getDoc, collection, onSnapshot, updateDoc, arrayUnion, query, orderBy, limit } from 'firebase/firestore'
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from 'react-router-dom';
@@ -16,11 +16,10 @@ import UserRatingLayout from './UserRatingLayout';
 import CommentForm from './CommentForm';
 import MetaDecorator from './MetaDecorator';
 import { getAnalytics, logEvent } from 'firebase/analytics';
+import Loader from './Loader';
 
 function DetailedSuggestion() {
-    const location = useLocation()
-    const suggestionID  = location.state.id
-
+    const {suggestionID}  = useParams()
     // get current suggestion
     const [censorRating, setCensorRating] = useState('')
     const [description, setDescription] = useState('')
@@ -64,12 +63,12 @@ function DetailedSuggestion() {
             let tempRecentPosts = []
             if (cachedRecentPosts.length <= 5) {
                 setRecentPosts(cachedRecentPosts.filter((item) => {
-                    return item.postedTime !== suggestionID
+                    return item.postedTime !== Number(suggestionID)
                 }))
             }
             else {
                 for (let i = 0; i < cachedRecentPosts.length; i++) {
-                    if (suggestionID !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
+                    if (Number(suggestionID) !== cachedRecentPosts[i].postedTime) tempRecentPosts.push(cachedRecentPosts[i]);
                 }
 
                 setRecentPosts(tempRecentPosts)
@@ -82,21 +81,21 @@ function DetailedSuggestion() {
             const q = query(docRef,orderBy('postedTime','desc'),limit(5))
             onSnapshot(q, (snapshot) => {
                 data = snapshot.docs.map(doc => doc.data()).filter((doc) => {
-                    return doc.postedTime !== suggestionID
+                    return doc.postedTime !== Number(suggestionID)
                 })
                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
             })
             const reviewQ = query(reviewRef,orderBy('postedTime','desc'),limit(2))
             onSnapshot(reviewQ,(snapshot)=>{
                 data = data.concat(snapshot.docs.map(doc=>doc.data()).filter((item)=>{
-                    return doc.postedTime !== suggestionID
+                    return doc.postedTime !== Number(suggestionID)
                 }))
                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
             })
             const suggestionQ = query(suggestionRef,orderBy('postedTime','desc'),limit(2))
             onSnapshot(suggestionQ,(snapshot)=>{
                 data = data.concat(snapshot.docs.map(doc=>doc.data()).filter((item)=>{
-                    return item.postedTime!== suggestionID
+                    return item.postedTime!== Number(suggestionID)
                 }))
                 window.sessionStorage.setItem('recentPosts',JSON.stringify(data))
             })
@@ -222,7 +221,7 @@ function DetailedSuggestion() {
         let allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
         if (allSuggestions !== null && allSuggestions.length !== 0) {
             allSuggestions = allSuggestions.filter((item) => {
-                return item.postedTime === suggestionID
+                return item.postedTime === Number(suggestionID)
             })
             setCensorRating(allSuggestions[0].censorRating)
             setDescription(allSuggestions[0].description)
@@ -283,7 +282,7 @@ function DetailedSuggestion() {
 
             <UserRatingLayout postID={suggestionID} postType="Suggestions" uniqueEmail={uniqueEmail} getRatings={getRatings} ratedStars={ratedStars} leftStars={leftStars} />
 
-            <PostYouMightLike recentPosts={recentPosts} postID={suggestionID}/>
+            {recentPosts.length===0?<Loader/>:<PostYouMightLike recentPosts={recentPosts} postID={suggestionID}/>}
             {/* <UserComments postID={suggestionID}/> */}
             <CommentForm postID={suggestionID} />
             <SocialProfiles />
