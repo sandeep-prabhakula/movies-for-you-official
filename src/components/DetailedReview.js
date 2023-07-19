@@ -16,6 +16,8 @@ import AdContent from './AdContent';
 import MetaDecorator from './MetaDecorator';
 import { getAnalytics, logEvent } from 'firebase/analytics';
 import { useLocation } from 'react-router-dom';
+import Loader from './Loader';
+
 function DetailedReview() {
     const location = useLocation();
     
@@ -306,7 +308,7 @@ function DetailedReview() {
             <RateMovie postID={reviewID} postType="Reviews" submitRating={submitRating} currentValue={currentValue} handleClick={handleClick} handleMouseLeave={handleMouseLeave} handleMouseOver={handleMouseOver} hoverValue={hoverValue} />
 
             <UserRatingLayout postID={reviewID} postType="Reviews" uniqueEmail={uniqueEmail} getRatings={getRatings} ratedStars={ratedStars} leftStars={leftStars} />
-            <PostYouMightLike recentPosts={recentPosts} postID={reviewID} />
+            {recentPosts.length===0?<Loader/>:<PostYouMightLike recentPosts={recentPosts} postID={reviewID} />}
             {/* <UserComments postID={reviewID}/> */}
             <CommentForm postID={reviewID} />
             <SocialProfiles />

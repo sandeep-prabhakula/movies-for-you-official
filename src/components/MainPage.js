@@ -10,6 +10,7 @@ import SuggestionCarousel from './SuggestionCarousel';
 import AdContent from './AdContent';
 import { getAnalytics, logEvent } from 'firebase/analytics'
 import { Helmet } from 'react-helmet-async';
+import Loader from './Loader';
 
 function MainPage() {
     const [slides, setSlides] = useState([])
@@ -66,12 +67,12 @@ function MainPage() {
         getReviews()
         getSuggestions()
     }, [])
-
+    if (slides.length === 0 || reviews.length === 0 || suggestions.length === 0) return <Loader />
     return (
         <>
             <Helmet>
                 <title>Movies4U Official</title>
-                <meta property='og:title' content='Movies4U Official'/>
+                <meta property='og:title' content='Movies4U Official' />
                 <meta property='og:description' content='Movies4U official is the best site ever to circulate movie updates, reviews and suggestions with best in class user-experience and lot of exclusive and real content. Provides exclusive updates on upcoming movies and trending topics' />
                 <meta property='og:image' content='/logo.jpg' />
                 <meta name="twitter:card" content="summary_large_image" />

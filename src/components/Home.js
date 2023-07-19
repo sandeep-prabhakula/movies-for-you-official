@@ -7,6 +7,7 @@ import ReviewItem from "./ReviewItem";
 import SocialProfiles from "./SocialProfiles";
 import Navbar from "./NavBar";
 import { Helmet } from "react-helmet-async";
+import Loader from "./Loader";
 
 const Home = (props) => {
   const [reviews, setReviews] = useState([])
@@ -44,7 +45,7 @@ const Home = (props) => {
     updatePosts()
     // eslint-disable-next-line
   }, [props.postType])
-
+  if(reviews.length===0)return <Loader/>
   return (
     <div>
       <Helmet>

@@ -5,6 +5,7 @@ import Navbar from './NavBar'
 import ReviewCardItem from './ReviewCardItem'
 import SocialProfiles from './SocialProfiles'
 import { Helmet } from 'react-helmet-async'
+import Loader from './Loader'
 
 function Reviews() {
     const cacheReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
@@ -23,6 +24,7 @@ function Reviews() {
     useEffect(() => {
         getReviews()
     }, [])
+    if(reviews.length===0)return <Loader/>
     return (
         <>
             <Helmet>

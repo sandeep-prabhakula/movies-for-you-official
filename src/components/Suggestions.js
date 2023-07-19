@@ -6,6 +6,7 @@ import Navbar from './NavBar'
 import SocialProfiles from './SocialProfiles'
 import SuggestionItem from './SuggestionItem'
 import { Helmet } from 'react-helmet-async'
+import Loader from './Loader'
 
 function Suggestions(props) {
     const { genre } = useParams()
@@ -47,6 +48,7 @@ function Suggestions(props) {
         getSuggestions()
 
     }, [])
+    if(suggestions.length===0)return <Loader/>
     return (
         <>
             <Helmet>
