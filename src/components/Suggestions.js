@@ -1,5 +1,5 @@
 import { onSnapshot, collection, where, query } from 'firebase/firestore'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { firestore } from '../firebase'
 import Navbar from './NavBar'
@@ -7,12 +7,12 @@ import SocialProfiles from './SocialProfiles'
 import SuggestionItem from './SuggestionItem'
 import { Helmet } from 'react-helmet-async'
 import Loader from './Loader'
+import { useQuery } from '@tanstack/react-query'
 
 function Suggestions(props) {
     const { genre } = useParams()
     const collectionRef = collection(firestore, 'Suggestions')
     const [genreSuggestions, setGenreSuggestions] = useState([])
-    const [suggestions, setSuggestions] = useState([])
     const allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
     const cacheSuggestions = JSON.parse(window.sessionStorage.getItem(genre))
 
@@ -32,23 +32,26 @@ function Suggestions(props) {
         }
     }
     const getSuggestions = async () => {
+        let posts
         if (allSuggestions !== null && allSuggestions.length !== 0) {
-            setSuggestions(allSuggestions)
+            posts = allSuggestions;
         } else {
             onSnapshot(collectionRef, (snapshot) => {
-                setSuggestions(snapshot.docs.map(doc => doc.data()).reverse())
+                posts = snapshot.docs.map(doc => doc.data()).reverse()
                 window.sessionStorage.setItem(allSuggestions, JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
             })
         }
+        return posts
     }
-    useEffect(() => {
 
-        // currently the below method is disabled
-        // getGenreSuggestions()
-        getSuggestions()
+    const { isLoading, isError, data, error } = useQuery(
+        ['getSuggestions'],
+        getSuggestions,
+        {staleTime:120000}
+        )
 
-    }, [])
-    if(suggestions.length===0)return <Loader/>
+    if(isLoading)return <Loader/>
+    if(isError)return <div className='alert alert-danger'>{error}</div>
     return (
         <>
             <Helmet>
@@ -58,13 +61,13 @@ function Suggestions(props) {
             <SocialProfiles />
             <div className="container mt-2">
                 <div className="row">
-                    {suggestions ? suggestions.map((suggestion) => {
+                    {data.map((suggestion) => {
                         return <div key={suggestion.postedTime} className="col-md-4">
                             <SuggestionItem id={suggestion.postedTime}
                                 imageURL={suggestion.imageURL}
                                 title={suggestion.title} />
                         </div>
-                    }) : console.log("...")}
+                    })}
                 </div>
             </div>
         </>

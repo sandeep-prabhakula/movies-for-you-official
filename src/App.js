@@ -24,10 +24,12 @@ import Suggestions from "./components/Suggestions";
 import DetailedReview from "./components/DetailedReview";
 import DetailedSuggestion from "./components/DetailedSuggestion";
 import Reviews from "./components/Reviews";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 
 function App() {
 
+  const queryClient = new QueryClient()
   const collectionRef = collection(firestore, 'Posts')
   const suggestionRef = collection(firestore, 'Suggestions')
   const reviewRef = collection(firestore, 'Reviews')
@@ -78,6 +80,8 @@ function App() {
     <>
 
 
+<QueryClientProvider client={queryClient}>
+
 
       <UserAuthContextProvider>
         <Router>
@@ -112,7 +116,7 @@ function App() {
           <Footer></Footer>
         </Router>
       </UserAuthContextProvider>
-
+      </QueryClientProvider>
     </>
   );
 }

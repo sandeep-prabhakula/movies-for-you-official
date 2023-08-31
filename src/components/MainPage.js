@@ -11,63 +11,87 @@ import AdContent from './AdContent';
 import { getAnalytics, logEvent } from 'firebase/analytics'
 import { Helmet } from 'react-helmet-async';
 import Loader from './Loader';
+import { useQuery } from '@tanstack/react-query';
 
 function MainPage() {
-    const [slides, setSlides] = useState([])
-    const [reviews, setReviews] = useState([])
-    const [suggestions, setSuggestions] = useState([])
+    
 
     const getTopPosts = async () => {
-
+        let posts
         let allPosts = JSON.parse(window.sessionStorage.getItem('allPosts'));
         if (allPosts !== null && allPosts.length !== 0) {
-            setSlides(JSON.parse(window.sessionStorage.getItem('allPosts')))
+            
+            posts = allPosts
         } else {
             const docRef = collection(firestore, 'Posts')
             onSnapshot(docRef, (snapshot) => {
-                let data = snapshot.docs.map(doc => doc.data()).reverse()
-                window.sessionStorage.setItem('allPosts', JSON.stringify(data))
-                setSlides(data)
+                posts = snapshot.docs.map(doc => doc.data()).reverse()
+                window.sessionStorage.setItem('allPosts', JSON.stringify(posts))
+                
             })
         }
+        return posts
     }
 
     const getReviews = async () => {
+        let posts
         let allReviews = JSON.parse(window.sessionStorage.getItem('reviews'))
         if (allReviews !== null && allReviews.length !== 0) {
-            setReviews(allReviews)
+            
+            posts = allReviews
         } else {
             const docRef = collection(firestore, 'Reviews')
             onSnapshot(docRef, (snapshot) => {
-                let data = snapshot.docs.map(doc => doc.data()).reverse()
-                window.sessionStorage.setItem('reviews', JSON.stringify(data))
-                setReviews(data)
+                posts = snapshot.docs.map(doc => doc.data()).reverse()
+                window.sessionStorage.setItem('reviews', JSON.stringify(posts))
+                
             })
         }
+        return posts
     }
 
     const getSuggestions = async () => {
+        let posts
         let allSuggestions = JSON.parse(window.sessionStorage.getItem('suggestions'))
         if (allSuggestions !== null && allSuggestions.length !== 0) {
-            setSuggestions(allSuggestions)
+            
+            posts = allSuggestions
         } else {
             const docRef = collection(firestore, "Suggestions")
             onSnapshot(docRef, (snapshot) => {
-                let data = snapshot.docs.map(doc => doc.data()).reverse()
-                window.sessionStorage.setItem('suggestions', JSON.stringify(data))
-                setSuggestions(data)
+                posts = snapshot.docs.map(doc => doc.data()).reverse()
+                window.sessionStorage.setItem('suggestions', JSON.stringify(posts))
+                
             })
         }
+        return posts
     }
 
-    useEffect(() => {
-        const analytics = getAnalytics();
-        logEvent(analytics, "HomePage")
-        getTopPosts()
-        getReviews()
-        getSuggestions()
-    }, [])
-    if (slides.length === 0 || reviews.length === 0 || suggestions.length === 0) return <Loader />
+
+    const { data: slides, isLoading: slidesLoading, isError: slidesAreError, error: slidesError } = useQuery(
+        ['topPosts'],
+        getTopPosts,
+        { staleTime: 12000 })
+
+    const { data: reviews, isLoading: reviewsLoading, isError: reviewsAreError, error: reviewsError } = useQuery(
+        ['reviews'],
+        getReviews,
+        { staleTime: 12000 }
+    )
+
+    const { data: suggestions, isLoading:suggestionsLoading, isError:suggestionsAreError, error:suggestionsError } = useQuery(
+        ['suggestions'],
+        getSuggestions,
+        { staleTime: 12000 }
+    )
+
+    if (slidesLoading || reviewsLoading || suggestionsLoading) return <Loader />
+    if (slidesAreError) return <div className='alert alert-danger'>{slidesError}</div>
+    if(reviewsAreError)return <div className="alert alert-danger">{reviewsError}</div>
+    if(suggestionsAreError)return <div className="alert alert-danger">
+        {suggestionsError}
+    </div>
+
     return (
         <>
             <Helmet>

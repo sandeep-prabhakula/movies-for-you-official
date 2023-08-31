@@ -15,7 +15,6 @@ const Home = (props) => {
   const updatePosts = async () => {
 
     // Fetching the posts from server
-
     // Compound Queries
     const cachedPosts = JSON.parse(window.sessionStorage.getItem(props.postType))
     if (cachedPosts !== null && cachedPosts.length !== 0) {
@@ -27,9 +26,6 @@ const Home = (props) => {
         window.sessionStorage.setItem(props.postType, JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
       })
     }
-
-
-
     // const posts = JSON.parse(window.sessionStorage.getItem('allPosts'))
     // setReviews(posts.filter((item) => {
     //   return item.postType === props.postType
@@ -37,15 +33,19 @@ const Home = (props) => {
   }
 
 
+
   // useEffect(()=>{},[]) -> runs every time page mounts
   // useEffect(()=>{},[parameter1,parameter2,...]) -> runs every time when there is change in parameters
   // useEffect(()=>{}) -> runs every time 
+
+
   useEffect(() => {
     // document.title = `Movies4u-official-${props.postType}`
     updatePosts()
     // eslint-disable-next-line
   }, [props.postType])
-  if(reviews.length===0)return <Loader/>
+
+  if (reviews.length===0) return <Loader />
   return (
     <div>
       <Helmet>
@@ -56,7 +56,7 @@ const Home = (props) => {
       <div className='container'>
         <h1 className="bebasneue">{props.postType} : </h1>
         <div className="row">
-          {reviews.map((element) => {
+          {reviews.map((element, index) => {
             return <div key={element.postedTime} className="col-md-3 ">
               <ReviewItem title={element.title ? element.title : ""}
                 description={element.description ? element.description : ""}
