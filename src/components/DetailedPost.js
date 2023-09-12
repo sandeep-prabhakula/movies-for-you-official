@@ -37,7 +37,7 @@ function DetailedPost(props) {
         setTitle(currentPost.title)
         setDescription(currentPost.description)
         setImageTitle(currentPost.imageTitle)
-        setPostType(currentPost.postType)
+        setPostType("News")
         setPostedTime(currentPost.postedTime)
         setWrittenBy(currentPost.writtenBy)
         setImageURL(currentPost.imageURL)

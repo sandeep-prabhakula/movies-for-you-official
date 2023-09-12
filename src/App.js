@@ -87,9 +87,14 @@ function App() {
         <Router>
           <Routes>
             <Route exact path="/" element={<MainPage />} />
-            <Route exact path="/exclusive-updates" element={<Home postType="Exclusive Updates" />} />
             <Route exact path="/reviews" element={<Reviews />} />
+            
+            
+            <Route exact path="/news" element={<Home postType="Exclusive Updates" />} />
+            
+            {/* <Route exact path="/exclusive-updates" element={<Home postType="Exclusive Updates" />} />
             <Route exact path='/latest-buzz' element={<Home postType='Latest Buzz' />} />
+            <Route exact path='/latest-updates' element={<Home postType='Latest Updates' />} /> */}
 
             {/* The below route is disabled temperorily */}
             {/* <Route exact path="/suggestions" element={<SuggestionsGenre />} /> */}
@@ -99,7 +104,6 @@ function App() {
             {/* <Route exact path="/add-post" element={<ProtectedRoute><AddPost/></ProtectedRoute>}/> */}
             <Route exact path='/privacy-policy' element={<PrivacyPolicy />} />
             <Route exact path="/signup" element={<Signup />} />
-            <Route exact path='/latest-updates' element={<Home postType='Latest Updates' />} />
             <Route exact path='/forgot-password' element={<ForgotPassword />} />
             <Route exact path='/terms-and-conditions' element={<TermsAndConditions />} />
             <Route exact path='/about-us' element={<AboutUs />} />

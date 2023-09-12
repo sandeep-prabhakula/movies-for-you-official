@@ -9,7 +9,7 @@ function NotFound() {
     navigate('/')
   }
   const toLatestUpdates = () => {
-    navigate('/latest-updates')
+    navigate('/news')
   }
   return (
     <>

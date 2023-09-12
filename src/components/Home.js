@@ -20,8 +20,8 @@ const Home = (props) => {
     if (cachedPosts !== null && cachedPosts.length !== 0) {
       setReviews(cachedPosts)
     } else {
-      const q = query(collectionRef, where('postType', "==", props.postType))
-      onSnapshot(q, (snapshot) => {
+      // const q = query(collectionRef, where('postType', "==", props.postType))
+      onSnapshot(collectionRef, (snapshot) => {
         setReviews(snapshot.docs.map(doc => doc.data()).reverse())
         window.sessionStorage.setItem(props.postType, JSON.stringify(snapshot.docs.map(doc => doc.data()).reverse()))
       })
@@ -49,12 +49,12 @@ const Home = (props) => {
   return (
     <div>
       <Helmet>
-        <title>{props.postType}</title>
+        <title>News</title>
       </Helmet>
       <Navbar />
       <SocialProfiles />
       <div className='container'>
-        <h1 className="bebasneue">{props.postType} : </h1>
+        <h1 className="bebasneue">news: </h1>
         <div className="row">
           {reviews.map((element, index) => {
             return <div key={element.postedTime} className="col-md-3 ">

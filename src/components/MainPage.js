@@ -85,17 +85,15 @@ function MainPage() {
             <SocialProfiles />
             <div className='container'>
 
-                <Carousal postType='Exclusive Updates' slides={slides.filter((item) => {
+                {/* <Carousal postType='Exclusive Updates' slides={slides.filter((item) => {
                     return item.postType === 'Exclusive Updates'
                 })} />
 
                 <Carousal postType='Latest Updates' slides={slides.filter((item) => {
                     return item.postType === 'Latest Updates'
                 })} />
-                <AdContent />
-                <Carousal postType='Latest Buzz' slides={slides.filter((item) => {
-                    return item.postType === 'Latest Buzz'
-                })} />
+                <AdContent /> */}
+                <Carousal postType='News' slides={slides} />
 
                 <ReviewCarousel reviews={reviews} />
                 <AdContent />
