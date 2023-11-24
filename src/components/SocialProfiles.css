@@ -2,3 +2,24 @@
     width: 3.75rem;
     height: 3.75rem;
 }
+
+@media screen and (max-width: 480px) {
+    .mProfile{
+        width: 3rem;
+        height: 3rem;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .mProfile{
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+}
+
+@media screen and (max-width: 240px) {
+    .mProfile{
+        width: 1.50rem;
+        height: 1.50rem;
+    }
+}

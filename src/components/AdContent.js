@@ -2,7 +2,13 @@ import React, { useEffect } from 'react'
 
 function AdContent() {
     useEffect(()=>{
-        // (window.adsbygoogle = window.adsbygoogle || []).push({ });
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
+
+        catch (e) {
+
+        }
     },[])
     return (
         <div className='container d-flex justify-content-center align-items-center'>
