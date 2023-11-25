@@ -122,7 +122,7 @@ function Navbar() {
                             </li> */}
                             {/* <li className="nav-item">
                                 <Link className={`nav-link ${location.pathname === "/add-post" ? 'active' : ''}`} style={{
-                                    display: user.uid && user.uid === process.env.REACT_APP_ADMIN_UID  ? 'flex' : 'none'
+                                    display: user.uid && user.uid === process.env.REACT_APP_VERCEL_ADMIN_UID  ? 'flex' : 'none'
                                 }} to="/add-post">Add Post</Link>
                             </li> */}
                         </ul>
